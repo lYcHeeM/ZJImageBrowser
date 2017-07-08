@@ -115,20 +115,19 @@ extension ZJPhotoBrowser {
         window.addSubview(self)
         window.addSubview(saveButton)
         window.addSubview(pageIndexLabel)
-        if let index = index {
-            innerCurrentIndex = index
-        }
+        if let index = index { innerCurrentIndex = index }
         scrollToItem(at: IndexPath(item: innerCurrentIndex, section: 0), at: .centeredHorizontally, animated: false)
         let currentPhotoWrapper = photoWrappers[innerCurrentIndex]
         guard enlargingAnimated, let enlargingView = currentPhotoWrapper.imageContainer, let enlargingImage = currentPhotoWrapper.placeholderImage else {
             animate(withEnlargingView: nil, animated: animated)
             return
         }
+        
         weak var enlargingViewSuperview  = enlargingView.superview
         let enlargingViewOriginalFrame   = enlargingView.frame
         let enlargingAnimationStartFrame = enlargingView.convert(enlargingView.bounds, to: window)
         window.addSubview(enlargingView)
-        enlargingView.frame         = enlargingAnimationStartFrame
+        enlargingView.frame              = enlargingAnimationStartFrame
         
         // 使图片宽度和屏慕宽度保持一致, 宽高比和图片的宽高比一致
         var enlargingAnimationEndFrame = CGRect.zero
@@ -140,9 +139,7 @@ extension ZJPhotoBrowser {
     
     fileprivate func animate(withEnlargingView enlargingView: UIView? = nil, itsSuperview: UIView? = nil, originalFrame: CGRect = .zero, animationEndFrame: CGRect = .zero, animated: Bool) {
         if animated {
-            if enlargingView != nil {
-                isHidden = true
-            }
+            if enlargingView != nil { isHidden = true }
             alpha                = 0
             saveButton.alpha     = 0
             pageIndexLabel.alpha = 0
@@ -176,10 +173,10 @@ extension ZJPhotoBrowser {
             if let _shrinkingView = photoWrappers[innerCurrentIndex].imageContainer, let window = UIApplication.shared.keyWindow, let photoCell = visibleCells.first as? ZJPhotoCell {
                 let rect = _shrinkingView.convert(_shrinkingView.bounds, to: window)
                 if window.bounds.contains(rect) {
-                    shrinkingViewSuperview = _shrinkingView.superview
-                    originalFrame = _shrinkingView.frame
+                    shrinkingViewSuperview     = _shrinkingView.superview
+                    originalFrame              = _shrinkingView.frame
                     shrinkingAnimationEndFrame = rect
-                    shrinkingView = _shrinkingView
+                    shrinkingView              = _shrinkingView
                     window.addSubview(_shrinkingView)
                     _shrinkingView.frame = photoCell.imageContainer.frame
                     // 注意, 发现, 不写下面两句, 动画时enlargingView内部控件的frame将不会是预期的效果

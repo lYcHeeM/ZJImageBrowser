@@ -179,21 +179,7 @@ extension ZJProgressView {
                     removeFromSuperview()
                 }
             }
-//            let startY: CGFloat = outLineLayer.lineWidth + spacing
-//            var startX: CGFloat = startY
-//            let height = frame.height - 2 * startX
-//            
-//            lineCap   = "round"
-//            lineWidth = height
-//            // 注意lineWidth属性, 它有一半的宽度是超出path所包住的范围, 所以起始x值要加上一半的lineWith, 但y值不需要, 因为计算height时已经留出相应的空隙了(startY)
-//            startX += lineWidth/2
-//            let width  = frame.width - 2 * startX
-//            let connectingStartX = startX + previousProgress * width
-//            progressPath = UIBezierPath()
-//            progressPath.move(to: CGPoint(x: connectingStartX, y: frame.height/2))
-//            progressPath.addLine(to: CGPoint(x: startX + width * (progress - previousProgress), y: frame.height/2))
         }
-        
         previousProgress = progress
         
         // reset

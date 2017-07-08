@@ -90,20 +90,28 @@
 		B22721011F0FC58500BC689B /* ZJPhotoBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				B266D7321F10FCB2003840E7 /* ZJPhotoBrowser */,
 				B276FBB01F10F2EE00B1D4C4 /* AppDelegate.swift */,
 				B276FBB11F10F2EE00B1D4C4 /* PhotosViewController.swift */,
 				B276FBB21F10F2EE00B1D4C4 /* ViewController.swift */,
-				B276FBB31F10F2EE00B1D4C4 /* ZJPhotoBrowser.swift */,
-				B276FBB41F10F2EE00B1D4C4 /* ZJPhotoBrowserHUD.swift */,
-				B276FBB51F10F2EE00B1D4C4 /* ZJPhotoCell.swift */,
-				B276FBB61F10F2EE00B1D4C4 /* ZJProgressView.swift */,
-				B2B97B0D1F10A1B3004D67A8 /* ZJPhotoWrapper.swift */,
 				B276FBBE1F10F2F800B1D4C4 /* Main.storyboard */,
 				B227210B1F0FC58500BC689B /* LaunchScreen.storyboard */,
 				B276FBC11F10F31B00B1D4C4 /* Assets.xcassets */,
 				B227210E1F0FC58500BC689B /* Info.plist */,
 			);
 			path = ZJPhotoBrowser;
+			sourceTree = "<group>";
+		};
+		B266D7321F10FCB2003840E7 /* ZJPhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				B276FBB31F10F2EE00B1D4C4 /* ZJPhotoBrowser.swift */,
+				B276FBB51F10F2EE00B1D4C4 /* ZJPhotoCell.swift */,
+				B2B97B0D1F10A1B3004D67A8 /* ZJPhotoWrapper.swift */,
+				B276FBB41F10F2EE00B1D4C4 /* ZJPhotoBrowserHUD.swift */,
+				B276FBB61F10F2EE00B1D4C4 /* ZJProgressView.swift */,
+			);
+			name = ZJPhotoBrowser;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
