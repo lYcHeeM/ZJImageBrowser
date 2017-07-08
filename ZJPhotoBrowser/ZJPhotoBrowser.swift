@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 let ZJPhotoBrowserButtonHorizontalPadding: CGFloat = 20
 let ZJPhotoBrowserButtonVerticalPadding  : CGFloat = 35
@@ -219,6 +220,11 @@ extension ZJPhotoBrowser {
 //MARK: - Handle Events
 extension ZJPhotoBrowser {
     @objc fileprivate func saveButtonClicked() {
+        let status = PHPhotoLibrary.authorizationStatus()
+        if status == .restricted || status == .denied {
+            ZJPhotoBrowserHUD.show(message: "Saving failed! Can't access your ablum, check in \"Settings\"->\"Privacy\"->\"Photos\".", inView: self, needsIndicator: false, hideAfter: 2)
+            return
+        }
         if visibleCells.count == 1, let photoCell = visibleCells.first as? ZJPhotoCell, let image = photoCell.image {
             UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
         }

@@ -44,7 +44,7 @@ class ZJPhotoBrowserHUD: UIToolbar {
     }
     
     @discardableResult
-    class func show(message: String?, inView view: UIView? = nil, animated: Bool = true, hideAfter interval: TimeInterval? = 1.2, needsIndicator: Bool = true) -> ZJPhotoBrowserHUD? {
+    class func show(message: String?, inView view: UIView? = nil, animated: Bool = true, needsIndicator: Bool = true, hideAfter interval: TimeInterval? = 1.2) -> ZJPhotoBrowserHUD? {
         var superView: UIView!
         if view != nil {
             superView = view
@@ -57,18 +57,20 @@ class ZJPhotoBrowserHUD: UIToolbar {
         let hud = ZJPhotoBrowserHUD(message: message)
         hud.indicator.isHidden = !needsIndicator
         superView.addSubview(hud)
-        let verticalMargin  : CGFloat = 20
+        let verticalMargin  : CGFloat = 15
         let horizontalMargin: CGFloat = 30
         let padding         : CGFloat = 10
         let maxWidth        : CGFloat = superView.frame.width - 4 * horizontalMargin
         let messageNeedsSize = hud.label.sizeThatFits(CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude))
-        let hudNeedSize      = CGSize(width: messageNeedsSize.width + 2 * horizontalMargin + padding + hud.indicator.bounds.width, height: messageNeedsSize.height + 2 * verticalMargin)
-        hud.frame.size       = hudNeedSize
-        hud.center           = CGPoint(x: superView.bounds.midX, y: superView.bounds.midY)
+        var indicatorNeedsWidth: CGFloat = 0
         if needsIndicator {
             hud.indicator.startAnimating()
+            indicatorNeedsWidth = padding + hud.indicator.bounds.width
         }
-        
+        let hudNeedSize = CGSize(width: messageNeedsSize.width + 2 * horizontalMargin + indicatorNeedsWidth, height: messageNeedsSize.height + 2 * verticalMargin)
+        hud.frame.size  = hudNeedSize
+        hud.center      = CGPoint(x: superView.bounds.midX, y: superView.bounds.midY)
+
         if animated {
             hud.alpha = 0
             UIView.animate(withDuration: 0.25, animations: { 
