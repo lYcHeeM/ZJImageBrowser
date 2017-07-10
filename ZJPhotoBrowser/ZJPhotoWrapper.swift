@@ -11,6 +11,7 @@ import UIKit
 class ZJPhotoWrapper: NSObject {
     var highQualityImageUrl: String = ""
     var shouldDownloadImage: Bool = true
+    var progressStyle      : ZJProgressViewStyle = .pie
     var placeholderImage   : UIImage?
     /// using for enlarging\shrinking animation
     weak var imageContainer: UIView?

@@ -88,16 +88,17 @@ extension PhotosViewController {
             var photoWrappers = [ZJPhotoWrapper]()
             var i = 0
             for urlString in highQualityImageUrlStrings.sub(of: 0..<subArrayCount) {
-                let wrapper = ZJPhotoWrapper(highQualityImageUrl: urlString, shouldDownloadImage: true, placeholderImage: cell.imageButtons[i].image(for: .normal), imageContainer: cell.imageButtons[i])
+                var bool = true
+                if i % 2 == 0 {
+                    bool = false
+                }
+                let wrapper = ZJPhotoWrapper(highQualityImageUrl: urlString, shouldDownloadImage: bool, placeholderImage: cell.imageButtons[i].image(for: .normal), imageContainer: cell.imageButtons[i])
                 photoWrappers.append(wrapper)
                 i += 1
             }
             
             let browser = ZJPhotoBrowser(photoWrappers: photoWrappers, currentIndex: index)
             browser.show()
-            browser.placeholderImageAtIndex = { innerIndex in
-                return cell.thumbnails[innerIndex]
-            }
         }
         
         return cell
