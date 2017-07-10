@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UITableViewController {
     override func viewDidLoad() {
+        
+        title = "main"
         super.viewDidLoad()
     }
 }

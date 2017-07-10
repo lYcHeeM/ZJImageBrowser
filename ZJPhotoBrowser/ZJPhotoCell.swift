@@ -209,7 +209,7 @@ extension ZJPhotoCell {
         // 导致重新滑到之前的页面会重新开启下载线程, 浪费资源, 故此处不用该方法.
         // Realizing 'imageView.sd_setImage...' function cancels previous image downloading which bounds to 'imageView', 
         // thus when cell is resued, it means imageView is reused, switching page would quite likely cancel the downloading progress. What's more, when we scroll to the that page again, a new downloading of the same image would be start. It's quite a waste of resources, so I use 'downloadImage' instead of 'sd_setImage...'.
-        SDWebImageManager.shared().downloadImage(with: usingUrl, options: [.cacheMemoryOnly, .retryFailed], progress: { [weak self] (receivedSize, expectedSize) in
+        SDWebImageManager.shared().downloadImage(with: usingUrl, options: [.retryFailed], progress: { [weak self] (receivedSize, expectedSize) in
             // 校验urlMap是防止下载图片过程中滑动到其他页面(cell)时, 下载进度回调被交叉执行。
             // 因为，一旦imageView被重用, 则滑动之前的下载进度回调和滑动之后的下载进度回调会在同一个cell中交叉触发(如果都在同一个线程中的话)。
             // 图片下载完成时, 设置图片等操作之前对urlMap的检验同理。

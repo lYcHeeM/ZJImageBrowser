@@ -56,7 +56,8 @@ class PhotosViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        setupNaviBar()
         tableView.register(PhotosCell.self, forCellReuseIdentifier: PhotosCell.reuseIdentifier)
         for index in 0..<numberOfRows {
             let subArrayCount = thumbnialUrls.count/numberOfRows * (index + 1)
@@ -64,6 +65,19 @@ class PhotosViewController: UITableViewController {
             tempCell.thumbnailUrls = thumbnialUrls.sub(of: 0..<subArrayCount)
             let cellHeight = tempCell.sizeThatFits(CGSize(width: view.frame.width, height: CGFloat.greatestFiniteMagnitude)).height
             cellHeights.append(cellHeight)
+        }
+    }
+    
+    fileprivate func setupNaviBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Prevent downloading", style: .plain, target: self, action: #selector(itemTapped))
+    }
+    
+    @objc fileprivate func itemTapped() {
+        tableView.reloadData()
+        if navigationItem.rightBarButtonItem?.title?.contains("Prevent") == true {
+            navigationItem.rightBarButtonItem?.title = "Resum downloading"
+        } else {
+            navigationItem.rightBarButtonItem?.title = "Prevent downloading"
         }
     }
 }
@@ -88,11 +102,16 @@ extension PhotosViewController {
             var photoWrappers = [ZJPhotoWrapper]()
             var i = 0
             for urlString in highQualityImageUrlStrings.sub(of: 0..<subArrayCount) {
-                var bool = true
-                if i % 2 == 0 {
-                    bool = false
+                //FIXME: just for test
+                var shouldDownloadImage = true
+                if self!.navigationItem.rightBarButtonItem?.title?.contains("Resum") == true {
+                    if i % 2 == 0 {
+                        shouldDownloadImage = false
+                    }
                 }
-                let wrapper = ZJPhotoWrapper(highQualityImageUrl: urlString, shouldDownloadImage: bool, placeholderImage: cell.imageButtons[i].image(for: .normal), imageContainer: cell.imageButtons[i])
+                //End
+                
+                let wrapper = ZJPhotoWrapper(highQualityImageUrl: urlString, shouldDownloadImage: shouldDownloadImage, placeholderImage: cell.imageButtons[i].image(for: .normal), imageContainer: cell.imageButtons[i])
                 photoWrappers.append(wrapper)
                 i += 1
             }
