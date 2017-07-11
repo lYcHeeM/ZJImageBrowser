@@ -56,8 +56,16 @@ class PhotosViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+//        registerForPreviewing(with: self, sourceView: view)
         setupNaviBar()
+        setupTableView()
+    }
+    
+    fileprivate func setupNaviBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Prevent downloading", style: .plain, target: self, action: #selector(itemTapped))
+    }
+    
+    fileprivate func setupTableView() {
         tableView.register(PhotosCell.self, forCellReuseIdentifier: PhotosCell.reuseIdentifier)
         for index in 0..<numberOfRows {
             let subArrayCount = thumbnialUrls.count/numberOfRows * (index + 1)
@@ -66,10 +74,6 @@ class PhotosViewController: UITableViewController {
             let cellHeight = tempCell.sizeThatFits(CGSize(width: view.frame.width, height: CGFloat.greatestFiniteMagnitude)).height
             cellHeights.append(cellHeight)
         }
-    }
-    
-    fileprivate func setupNaviBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Prevent downloading", style: .plain, target: self, action: #selector(itemTapped))
     }
     
     @objc fileprivate func itemTapped() {
@@ -110,13 +114,14 @@ extension PhotosViewController {
                     }
                 }
                 //End
-                
+                let t = tableView.visibleCells
                 let wrapper = ZJPhotoWrapper(highQualityImageUrl: urlString, shouldDownloadImage: shouldDownloadImage, placeholderImage: cell.imageButtons[i].image(for: .normal), imageContainer: cell.imageButtons[i])
                 photoWrappers.append(wrapper)
                 i += 1
             }
             
             let browser = ZJPhotoBrowser(photoWrappers: photoWrappers, currentIndex: index)
+            browser.isScrollEnabled = false
             browser.show()
         }
         

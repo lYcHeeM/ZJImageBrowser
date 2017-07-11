@@ -35,7 +35,10 @@ class ZJPhotoCell: UICollectionViewCell {
     var imageContainer: UIImageView {
         return imageView
     }
-    var singleTapped: ((UITapGestureRecognizer) -> Swift.Void)?
+    /// 注意: 此闭包将不在主线程执行
+    /// Note: this closure excutes in global queue.
+    var imageQueryingFinished: ((Bool, UIImage?)         -> Swift.Void)?
+    var singleTapped         : ((UITapGestureRecognizer) -> Swift.Void)?
     
     var image: UIImage? {
         didSet {
@@ -231,6 +234,7 @@ extension ZJPhotoCell {
                     self?.retryButton.isHidden = false
                 }
             })
+            self?.imageQueryingFinished?(error == nil, image)
         }
     }
 }

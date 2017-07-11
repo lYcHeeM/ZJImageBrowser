@@ -25,7 +25,13 @@ class ZJPhotoBrowser: UICollectionView {
     var currentIndex: Int {
         return innerCurrentIndex
     }
-    
+    override var isScrollEnabled: Bool {
+        didSet {
+            needsPageIndex = isScrollEnabled
+            let tempValue  = isScrollEnabled
+            super.isScrollEnabled = tempValue
+        }
+    }
     var needsPageIndex: Bool = true {
         didSet {
             pageIndexLabel.isHidden = !needsPageIndex
@@ -41,6 +47,9 @@ class ZJPhotoBrowser: UICollectionView {
     var usesInternalHUD = true
     var albumAuthorizingFailed: ((ZJPhotoBrowser, PHAuthorizationStatus) -> Swift.Void)?
     var photoSavingFailed     : ((ZJPhotoBrowser, UIImage)               -> Swift.Void)?
+    /// 注意: 此闭包将不在主线程执行
+    /// Note: this closure excutes in global queue.
+    var imageQueryingFinished : ((ZJPhotoBrowser, Bool, UIImage?)        -> Swift.Void)?
     
     required init(photoWrappers: [ZJPhotoWrapper], currentIndex: Int = 0) {
         let layout = UICollectionViewFlowLayout()
@@ -168,8 +177,8 @@ extension ZJPhotoBrowser {
         }
     }
     
-    func dismiss(animated: Bool = true) {
-        guard isShowing else { return }
+    func dismiss(animated: Bool = true, force: Bool = false) {
+        if !isShowing && !force { return }
         if animated {
             weak var shrinkingViewSuperview: UIView?
             var originalFrame = CGRect.zero
@@ -261,6 +270,10 @@ extension ZJPhotoBrowser: UICollectionViewDelegate, UICollectionViewDataSource {
         cell.setImage(with: photoWrappers[indexPath.item])
         cell.singleTapped = { [weak self] _ in
             self?.dismiss()
+        }
+        cell.imageQueryingFinished = { [weak self] (succeed, image) in
+            guard self != nil else { return }
+            self?.imageQueryingFinished?(self!, succeed, image)
         }
         
         return cell
