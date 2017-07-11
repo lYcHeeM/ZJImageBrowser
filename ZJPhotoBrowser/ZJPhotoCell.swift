@@ -42,6 +42,7 @@ class ZJPhotoCell: UICollectionViewCell {
     
     var image: UIImage? {
         didSet {
+            guard oldValue != image else { return }
             adjustSubviewFrames()
         }
     }
@@ -60,10 +61,12 @@ class ZJPhotoCell: UICollectionViewCell {
 extension ZJPhotoCell {
     override func layoutSubviews() {
         super.layoutSubviews()
+        scrollView.frame = CGRect(x: 0, y: 0, width: frame.width - ZJPhotoBrowser.pageSpacing, height: frame.height)
         if let retryButton = retryButton {
-            retryButton.frame.origin = CGPoint(x: ZJPhotoBrowserButtonHorizontalPadding, y: frame.size.height - ZJPhotoBrowserButtonVerticalPadding - ZJPhotoBrowserButtonHeight)
-            retryButton.frame.size.height = ZJPhotoBrowserButtonHeight
+            retryButton.frame.origin = CGPoint(x: ZJPhotoBrowser.buttonHorizontalPadding, y: frame.size.height - ZJPhotoBrowser.buttonVerticalPadding - ZJPhotoBrowser.buttonHeight)
+            retryButton.frame.size.height = ZJPhotoBrowser.buttonHeight
         }
+        adjustSubviewFrames()
     }
     
     fileprivate func setupSubviews() {
@@ -83,7 +86,7 @@ extension ZJPhotoCell {
         // 并注意到为了在页与页之间插入间隔, itemSize尾部有一小段非实际内容的间距用于实现此效果, 
         // 此处直接固定scrollView的frame
         // Note: in order to avoid setting scrollView and imageView's frame in 'layoutSubviews' function, and realizing there is a pageSpacing in itemWidth, I fixed the scrollView's frame at this place.
-        scrollView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+//        scrollView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         
         scrollView.addSubview(imageView)
         imageView.isUserInteractionEnabled = true
@@ -104,7 +107,7 @@ extension ZJPhotoCell {
         retryButton.sizeToFit()
         retryButton.addTarget(self, action: #selector(retryButtonClicked), for: .touchUpInside)
         contentView.addSubview(retryButton)
-        retryButton.frame.origin = CGPoint(x: ZJPhotoBrowserButtonHorizontalPadding, y: frame.size.height - ZJPhotoBrowserButtonVerticalPadding - ZJPhotoBrowserButtonHeight)
+        retryButton.frame.origin = CGPoint(x: ZJPhotoBrowser.buttonHorizontalPadding, y: frame.size.height - ZJPhotoBrowser.buttonVerticalPadding - ZJPhotoBrowser.buttonHeight)
     }
     
     fileprivate func adjustSubviewFrames() {

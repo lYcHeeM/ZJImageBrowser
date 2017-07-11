@@ -8,22 +8,32 @@
 import UIKit
 import Photos
 
-let ZJPhotoBrowserButtonHorizontalPadding: CGFloat = 20
-let ZJPhotoBrowserButtonVerticalPadding  : CGFloat = 35
-let ZJPhotoBrowserButtonHeight           : CGFloat = 27
-
 /// An elegant full screen photo browser based on UICollectionView.
 class ZJPhotoBrowser: UICollectionView {
+    static let buttonHorizontalPadding: CGFloat = 20
+    static let buttonVerticalPadding  : CGFloat = 35
+    static let buttonHeight           : CGFloat = 27
+    static let pageSpacing            : CGFloat = 10
     
     fileprivate var photoWrappers     = [ZJPhotoWrapper]()
     fileprivate var isShowing         = false
     fileprivate var saveButton        = UIButton(type: .system)
     fileprivate var pageIndexLabel    = UILabel()
-    fileprivate var innerCurrentIndex = 0
+    fileprivate var innerInitialIndex = 0
     fileprivate weak var hud: ZJPhotoBrowserHUD?
     
-    var currentIndex: Int {
-        return innerCurrentIndex
+    var initialIndex: Int {
+        return innerInitialIndex
+    }
+    var containerRect: CGRect = UIScreen.main.bounds {
+        didSet {
+            let pageSpacing: CGFloat = ZJPhotoBrowser.pageSpacing
+            frame = CGRect(x: containerRect.minX, y: containerRect.minY, width: containerRect.width + pageSpacing, height: containerRect.height)
+            if let layout = collectionViewLayout as? UICollectionViewFlowLayout {
+                layout.itemSize = CGSize(width: containerRect.width + pageSpacing, height: containerRect.height)
+                collectionViewLayout = layout
+            }
+        }
     }
     override var isScrollEnabled: Bool {
         didSet {
@@ -45,30 +55,31 @@ class ZJPhotoBrowser: UICollectionView {
     /// Default is true. trun off it if you want use loacl HUD.
     /// 默认打开, 如果想用项目本地的hud提示异常, 请置为false
     var usesInternalHUD = true
+    var imageViewSingleTapped : ((ZJPhotoBrowser, Int, UIImage?)         -> Swift.Void)?
     var albumAuthorizingFailed: ((ZJPhotoBrowser, PHAuthorizationStatus) -> Swift.Void)?
     var photoSavingFailed     : ((ZJPhotoBrowser, UIImage)               -> Swift.Void)?
     /// 注意: 此闭包将不在主线程执行
     /// Note: this closure excutes in global queue.
     var imageQueryingFinished : ((ZJPhotoBrowser, Bool, UIImage?)        -> Swift.Void)?
     
-    required init(photoWrappers: [ZJPhotoWrapper], currentIndex: Int = 0) {
+    required init(photoWrappers: [ZJPhotoWrapper], initialIndex: Int = 0, containerRect: CGRect = UIScreen.main.bounds) {
         let layout = UICollectionViewFlowLayout()
-        let screenSize                 = UIScreen.main.bounds.size
+        self.containerRect = containerRect
         // 每个item, 除了实际内容, 尾部再加一段空白间隙, 以实现和ScrollView一样的翻页效果.
         // 意识到设置minimumLineSpacing = 10, 并增加collectionView相同的宽度, 
         // 似乎也能达到这个效果, 但由于最后一页尾部不存在lineSpacing, collectionView的contentSize将无法完全展示最后一页, 即最后一页末尾10距离的内容将不能显示.
         // By default, UICollectionViewFlowLayout's minimumLineSpacing is 10.0, when collectionView's item is horizontally filled (itemSize.width = collectionView.bounds.width) and collectionView is paging enabled, greater than zero 'minimumLineSpacing' will cause an unintended performance: start from second page, every page has a gap which will be accumulated by page number.
         // It seems that we can expand collectionView's width by 'minimumLineSpacing' to fix this problem. But pratice negates this solution: When there are tow pages or more, collectionView will not give the last one a 'lineSpacing', so it's 'contentSize' is not enough to show this page's content completely, which means if the 'minimumLineSpacing' were 10.0, the last page's end would overstep the collectionView's contentSize by 10.0.
         // Finally, I use the following simple solution to insert a margin between every item (like UIScrollView's preformance): Expand every collectionViewItem's width by a fixed value 'pageSpacing' (such as 10.0), and expand the collectionView's width by the same value, too. And don't forget that, when layout collevtionViewCell's subviews, there's an additional spacing which is not for diplaying the real content.
-        let pageSpacing: CGFloat       = 10
-        layout.itemSize                = CGSize(width: screenSize.width + pageSpacing, height: screenSize.height)
+        let pageSpacing: CGFloat       = ZJPhotoBrowser.pageSpacing
+        layout.itemSize                = CGSize(width: containerRect.width + pageSpacing, height: containerRect.height)
         layout.scrollDirection         = .horizontal
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing      = 0
         
-        super.init(frame: CGRect(x: 0, y: 0, width: screenSize.width + pageSpacing, height: screenSize.height), collectionViewLayout: layout)
+        super.init(frame: CGRect(x: containerRect.minX, y: containerRect.minY, width: containerRect.width + pageSpacing, height: containerRect.height), collectionViewLayout: layout)
         self.photoWrappers     = photoWrappers
-        self.innerCurrentIndex = currentIndex
+        self.innerInitialIndex = initialIndex
         
         isPagingEnabled = true
         dataSource      = self
@@ -90,8 +101,8 @@ class ZJPhotoBrowser: UICollectionView {
 extension ZJPhotoBrowser {
     override func layoutSubviews() {
         super.layoutSubviews()
-        saveButton.frame.origin = CGPoint(x: frame.width - ZJPhotoBrowserButtonHorizontalPadding - 10 - saveButton.bounds.width, y: frame.height - ZJPhotoBrowserButtonHeight - ZJPhotoBrowserButtonVerticalPadding)
-        saveButton.frame.size.height = ZJPhotoBrowserButtonHeight
+        saveButton.frame.origin = CGPoint(x: frame.width - ZJPhotoBrowser.buttonHorizontalPadding - 10 - saveButton.bounds.width, y: frame.height - ZJPhotoBrowser.buttonHeight - ZJPhotoBrowser.buttonVerticalPadding)
+        saveButton.frame.size.height = ZJPhotoBrowser.buttonHeight
     }
     
     fileprivate func setupSaveButton() {
@@ -115,22 +126,22 @@ extension ZJPhotoBrowser {
         pageIndexLabel.textAlignment = .center
         pageIndexLabel.frame.size    = CGSize(width: 60, height: 27)
         pageIndexLabel.center        = CGPoint(x: UIScreen.main.bounds.width/2, y: 30)
-        pageIndexLabel.text          = "\(innerCurrentIndex + 1)/\(photoWrappers.count)"
+        pageIndexLabel.text          = "\(innerInitialIndex + 1)/\(photoWrappers.count)"
     }
 }
 
 //MARK: - Show & Hide
 extension ZJPhotoBrowser {
     
-    func show(animated: Bool = true, enlargingAnimated: Bool = true, at index: Int? = nil) {
-        guard let window = UIApplication.shared.keyWindow else { return }
+    func show(inView view: UIView? = nil, animated: Bool = true, enlargingAnimated: Bool = true, at index: Int? = nil) {
+        guard let _superview = view == nil ? UIApplication.shared.keyWindow : view else { return }
         guard isShowing == false else { return }
-        window.addSubview(self)
-        window.addSubview(saveButton)
-        window.addSubview(pageIndexLabel)
-        if let index = index { innerCurrentIndex = index }
-        scrollToItem(at: IndexPath(item: innerCurrentIndex, section: 0), at: .centeredHorizontally, animated: false)
-        let currentPhotoWrapper = photoWrappers[innerCurrentIndex]
+        _superview.addSubview(self)
+        _superview.addSubview(saveButton)
+        _superview.addSubview(pageIndexLabel)
+        if let index = index { innerInitialIndex = index }
+        scrollToItem(at: IndexPath(item: innerInitialIndex, section: 0), at: .centeredHorizontally, animated: false)
+        let currentPhotoWrapper = photoWrappers[innerInitialIndex]
         guard enlargingAnimated, let enlargingView = currentPhotoWrapper.imageContainer, let enlargingImage = currentPhotoWrapper.placeholderImage else {
             animate(withEnlargingView: nil, animated: animated)
             return
@@ -138,16 +149,16 @@ extension ZJPhotoBrowser {
         
         weak var enlargingViewSuperview  = enlargingView.superview
         let enlargingViewOriginalFrame   = enlargingView.frame
-        let enlargingAnimationStartFrame = enlargingView.convert(enlargingView.bounds, to: window)
-        window.addSubview(enlargingView)
+        let enlargingAnimationStartFrame = enlargingView.convert(enlargingView.bounds, to: _superview)
+        _superview.addSubview(enlargingView)
         enlargingView.frame              = enlargingAnimationStartFrame
         
         // 使enlargingViewEndFrame的宽度和屏慕宽度保持一致, 宽高比和图片的宽高比一致
         // Make enlargingViewEndFrame's width equals to screen width, and its aspect ratio the same as its inner image;
         var enlargingAnimationEndFrame = CGRect.zero
-        enlargingAnimationEndFrame.size.width  = window.frame.width
-        enlargingAnimationEndFrame.size.height = window.frame.width * (enlargingImage.size.height/enlargingImage.size.width)
-        enlargingAnimationEndFrame.origin      = CGPoint(x: 0, y: (window.frame.height - enlargingAnimationEndFrame.height)/2)
+        enlargingAnimationEndFrame.size.width  = _superview.frame.width
+        enlargingAnimationEndFrame.size.height = _superview.frame.width * (enlargingImage.size.height/enlargingImage.size.width)
+        enlargingAnimationEndFrame.origin      = CGPoint(x: 0, y: (_superview.frame.height - enlargingAnimationEndFrame.height)/2)
         animate(withEnlargingView: enlargingView, itsSuperview: enlargingViewSuperview, originalFrame: enlargingViewOriginalFrame, animationEndFrame: enlargingAnimationEndFrame, animated: true)
     }
     
@@ -177,21 +188,21 @@ extension ZJPhotoBrowser {
         }
     }
     
-    func dismiss(animated: Bool = true, force: Bool = false) {
+    func dismiss(animated: Bool = true, force: Bool = false, completion: (() -> Swift.Void)? = nil) {
         if !isShowing && !force { return }
         if animated {
             weak var shrinkingViewSuperview: UIView?
             var originalFrame = CGRect.zero
             var shrinkingAnimationEndFrame = CGRect.zero
             var shrinkingView: UIView?
-            if let _shrinkingView = photoWrappers[innerCurrentIndex].imageContainer, let window = UIApplication.shared.keyWindow, let photoCell = visibleCells.first as? ZJPhotoCell {
-                let rect = _shrinkingView.convert(_shrinkingView.bounds, to: window)
-                if window.bounds.intersects(rect) {
+            if let _shrinkingView = photoWrappers[innerInitialIndex].imageContainer, let _superview = superview, let photoCell = visibleCells.first as? ZJPhotoCell {
+                let rect = _shrinkingView.convert(_shrinkingView.bounds, to: _superview)
+                if _superview.bounds.intersects(rect) {
                     shrinkingViewSuperview     = _shrinkingView.superview
                     originalFrame              = _shrinkingView.frame
                     shrinkingAnimationEndFrame = rect
                     shrinkingView              = _shrinkingView
-                    window.addSubview(_shrinkingView)
+                    _superview.addSubview(_shrinkingView)
                     _shrinkingView.frame = photoCell.imageContainer.frame
                     // 注意, 发现, 不写下面两句, 动画时shrinkingView内部控件的frame将不会是预期的效果
                     // Practice shows, if the following two expression were not called, frames of shrinkingView's subviews would't preform expectantly when animating.
@@ -219,12 +230,14 @@ extension ZJPhotoBrowser {
                     shrinkingView.frame = originalFrame
                     shrinkingViewSuperview?.addSubview(shrinkingView)
                 }
+                completion?()
             })
         } else {
             pageIndexLabel.removeFromSuperview()
             saveButton.removeFromSuperview()
             removeFromSuperview()
             isShowing = false
+            completion?()
         }
     }
 }
@@ -268,8 +281,14 @@ extension ZJPhotoBrowser: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ZJPhotoCell.reuseIdentifier, for: indexPath) as! ZJPhotoCell
         cell.setImage(with: photoWrappers[indexPath.item])
+        weak var weakCell = cell
         cell.singleTapped = { [weak self] _ in
-            self?.dismiss()
+            guard self != nil, let strongCell = weakCell else { return }
+            if let closure = self?.imageViewSingleTapped {
+                closure(self!, indexPath.item, strongCell.imageContainer.image)
+            } else {
+                self?.dismiss()
+            }
         }
         cell.imageQueryingFinished = { [weak self] (succeed, image) in
             guard self != nil else { return }
@@ -282,7 +301,7 @@ extension ZJPhotoBrowser: UICollectionViewDelegate, UICollectionViewDataSource {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else { return }
         let currentPage      = Int(scrollView.contentOffset.x / flowLayout.itemSize.width)
-        innerCurrentIndex    = currentPage
+        innerInitialIndex    = currentPage
         pageIndexLabel.text  = "\(currentPage + 1)/\(photoWrappers.count)"
     }
 }

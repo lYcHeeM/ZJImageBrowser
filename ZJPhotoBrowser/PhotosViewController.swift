@@ -53,10 +53,10 @@ class PhotosViewController: UITableViewController {
         "http://wx2.sinaimg.cn/thumbnail/ad673c42gy1fgyiypd707g20dw064qqi.gif"
     ]
     var cellHeights = [CGFloat]()
+    var thumbnialUrlsInTappedCell: ([String], PhotosCell, Int, IndexPath)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        registerForPreviewing(with: self, sourceView: view)
         setupNaviBar()
         setupTableView()
     }
@@ -98,7 +98,9 @@ extension PhotosViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: PhotosCell.reuseIdentifier, for: indexPath) as! PhotosCell
         
         let subArrayCount = thumbnialUrls.count/numberOfRows * (indexPath.row + 1)
+        cell.containerController = self
         cell.thumbnailUrls = thumbnialUrls.sub(of: 0..<subArrayCount)
+        weak var weakCell = cell
         cell.buttonDidClicked = { [weak self] button, index in
             guard self != nil else { return }
             let highQualityImageUrlStrings = self!.thumbnialUrls.map({ (url) -> String in
@@ -122,8 +124,12 @@ extension PhotosViewController {
                 i += 1
             }
             
-            let browser = ZJPhotoBrowser(photoWrappers: photoWrappers, currentIndex: index)
+            let browser = ZJPhotoBrowser(photoWrappers: photoWrappers, initialIndex: index)
             browser.show()
+        }
+        cell.buttonTouchBegan = { [weak self] button, index in
+            guard self != nil, let strongCell = weakCell else { return }
+            self!.thumbnialUrlsInTappedCell = (strongCell.thumbnailUrls, strongCell, index, indexPath)
         }
         
         return cell
@@ -134,6 +140,49 @@ extension PhotosViewController {
     }
 }
 
+//MARK: - UIViewControllerPreviewingDelegate
+@available(iOS 9.0, *)
+extension PhotosViewController: UIViewControllerPreviewingDelegate {
+ 
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let thumbnialUrlsInTappedCell = thumbnialUrlsInTappedCell else { return nil }
+        let index = thumbnialUrlsInTappedCell.2
+        let highQualityUrlString = (thumbnialUrlsInTappedCell.0[index] as NSString).replacingOccurrences(of: "thumbnail", with: "large") as String
+        let placeholderImage = thumbnialUrlsInTappedCell.1.imageButtons[index].image(for: .normal)
+        let wrapper = ZJPhotoWrapper(highQualityImageUrl: highQualityUrlString, shouldDownloadImage: true, placeholderImage: placeholderImage, imageContainer: nil)
+        let target = ZJPhotoBrowserPreviewingController(photoWrapper: wrapper)
+        target.preferredContentSize = target.supposedContentSize(with: placeholderImage)
+        return target
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        guard let thumbnialUrlsInTappedCell = thumbnialUrlsInTappedCell else { return }
+        var photoWrappers = [ZJPhotoWrapper]()
+        let highQualityImageUrlStrings = thumbnialUrlsInTappedCell.0.map({ (url) -> String in
+            return (url as NSString).replacingOccurrences(of: "thumbnail", with: "large") as String
+        })
+        var index = 0
+        for urlString in highQualityImageUrlStrings {
+            let imageContainer = thumbnialUrlsInTappedCell.1.imageButtons[index]
+            let placeholderImage = imageContainer.image(for: .normal)
+            let wrapper = ZJPhotoWrapper(highQualityImageUrl: urlString, shouldDownloadImage: true, placeholderImage: placeholderImage, imageContainer: imageContainer)
+            photoWrappers.append(wrapper)
+            index += 1
+        }
+        ZJPhotoBrowser(photoWrappers: photoWrappers, initialIndex: thumbnialUrlsInTappedCell.2).show(animated: false, enlargingAnimated: false)
+    }
+    
+//    override var previewActionItems: [UIPreviewActionItem] {
+//        let action1 = UIPreviewAction(title: "Copy", style: .default) { (action, controller) in
+//            
+//        }
+//        let action2 = UIPreviewAction(title: "Save", style: .default) { (action, controller) in
+//            
+//        }
+//        return [action1, action2]
+//    }
+}
+
 //MARK: -
 class PhotosCell: UITableViewCell {
     static let reuseIdentifier = "PhotosCell"
@@ -142,7 +191,9 @@ class PhotosCell: UITableViewCell {
         debugPrint("---PhotosCell")
     }
     
+    weak var containerController: PhotosViewController?
     var buttonDidClicked: ((UIButton, Int) -> Swift.Void)?
+    var buttonTouchBegan: ((UIButton, Int) -> Swift.Void)?
     var thumbnailUrls = [String]() {
         didSet {
             let maxItemsInOneLine         = 3
@@ -167,11 +218,21 @@ class PhotosCell: UITableViewCell {
                     if let url = URL(string: thumbnailUrls[index]) {
                         button.sd_setImage(with: url, for: .normal, placeholderImage: UIImage(named: "whiteplaceholder"))
                     }
+                    weak var weakButton = button
+                    let touchBeganUsingIndex = index
+                    button.touchBegan = { [weak self] in
+                        guard let strongButton = weakButton else { return }
+                        self?.buttonTouchBegan?(strongButton, touchBeganUsingIndex)
+                    }
                     button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
                     let buttonX = horiozntalMargin + CGFloat(index % maxItemsInOneLine) * (buttonSize + padding)
                     let buttonY = verticalInset + CGFloat(index/maxItemsInOneLine) * (buttonSize + verticalMargin)
                     button.frame = CGRect(x: buttonX, y: buttonY, width: buttonSize, height: buttonSize)
                     button.imageView?.contentMode = .scaleAspectFill
+                    if #available(iOS 9.0, *), let containerController = containerController {
+                        //            containerController.unregisterForPreviewing(withContext: <#T##UIViewControllerPreviewing#>)
+                        containerController.registerForPreviewing(with: containerController, sourceView: button)
+                    }
                 }
                 index += 1
             }
@@ -229,8 +290,15 @@ class ImageButton: UIButton {
         debugPrint("---ImageButton")
     }
     
+    var touchBegan: (() -> Swift.Void)?
+    
     override func imageRect(forContentRect contentRect: CGRect) -> CGRect {
         return contentRect
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        touchBegan?()
+        super.touchesBegan(touches, with: event)
     }
 }
 

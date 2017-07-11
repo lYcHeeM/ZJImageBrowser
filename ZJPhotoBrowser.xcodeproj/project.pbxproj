@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2431500135C10D0E372EDA14 /* Pods_ZJPhotoBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AB1B98737860F6B92588F26 /* Pods_ZJPhotoBrowser.framework */; };
 		B227210D1F0FC58500BC689B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B227210B1F0FC58500BC689B /* LaunchScreen.storyboard */; };
+		B266D7661F14B5D0003840E7 /* ZJPhotoBrowserPreviewingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7651F14B5D0003840E7 /* ZJPhotoBrowserPreviewingController.swift */; };
 		B276FBB71F10F2EE00B1D4C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB01F10F2EE00B1D4C4 /* AppDelegate.swift */; };
 		B276FBB81F10F2EE00B1D4C4 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB11F10F2EE00B1D4C4 /* PhotosViewController.swift */; };
 		B276FBB91F10F2EE00B1D4C4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB21F10F2EE00B1D4C4 /* ViewController.swift */; };
@@ -28,6 +29,7 @@
 		B22720FF1F0FC58500BC689B /* ZJPhotoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZJPhotoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B227210C1F0FC58500BC689B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B227210E1F0FC58500BC689B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B266D7651F14B5D0003840E7 /* ZJPhotoBrowserPreviewingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJPhotoBrowserPreviewingController.swift; sourceTree = "<group>"; };
 		B276FBB01F10F2EE00B1D4C4 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B276FBB11F10F2EE00B1D4C4 /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		B276FBB21F10F2EE00B1D4C4 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				B2B97B0D1F10A1B3004D67A8 /* ZJPhotoWrapper.swift */,
 				B276FBB41F10F2EE00B1D4C4 /* ZJPhotoBrowserHUD.swift */,
 				B276FBB61F10F2EE00B1D4C4 /* ZJProgressView.swift */,
+				B266D7651F14B5D0003840E7 /* ZJPhotoBrowserPreviewingController.swift */,
 			);
 			name = ZJPhotoBrowser;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 				B276FBBC1F10F2EE00B1D4C4 /* ZJPhotoCell.swift in Sources */,
 				B276FBB81F10F2EE00B1D4C4 /* PhotosViewController.swift in Sources */,
 				B276FBBA1F10F2EE00B1D4C4 /* ZJPhotoBrowser.swift in Sources */,
+				B266D7661F14B5D0003840E7 /* ZJPhotoBrowserPreviewingController.swift in Sources */,
 				B276FBBB1F10F2EE00B1D4C4 /* ZJPhotoBrowserHUD.swift in Sources */,
 				B2B97B0E1F10A1B3004D67A8 /* ZJPhotoWrapper.swift in Sources */,
 				B276FBBD1F10F2EE00B1D4C4 /* ZJProgressView.swift in Sources */,
