@@ -114,7 +114,7 @@ extension PhotosViewController {
                     }
                 }
                 //End
-                let t = tableView.visibleCells
+                
                 let wrapper = ZJPhotoWrapper(highQualityImageUrl: urlString, shouldDownloadImage: shouldDownloadImage, placeholderImage: cell.imageButtons[i].image(for: .normal), imageContainer: cell.imageButtons[i])
                 photoWrappers.append(wrapper)
                 i += 1
