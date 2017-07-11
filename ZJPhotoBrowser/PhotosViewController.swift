@@ -79,6 +79,8 @@ class PhotosViewController: UITableViewController {
     @objc fileprivate func itemTapped() {
         tableView.reloadData()
         if navigationItem.rightBarButtonItem?.title?.contains("Prevent") == true {
+            SDImageCache.shared().clearMemory()
+            SDImageCache.shared().clearDisk()
             navigationItem.rightBarButtonItem?.title = "Resum downloading"
         } else {
             navigationItem.rightBarButtonItem?.title = "Prevent downloading"
@@ -121,7 +123,6 @@ extension PhotosViewController {
             }
             
             let browser = ZJPhotoBrowser(photoWrappers: photoWrappers, currentIndex: index)
-            browser.isScrollEnabled = false
             browser.show()
         }
         
