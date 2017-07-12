@@ -53,7 +53,7 @@ class PhotosViewController: UITableViewController {
         "http://wx2.sinaimg.cn/thumbnail/ad673c42gy1fgyiypd707g20dw064qqi.gif"
     ]
     var cellHeights = [CGFloat]()
-    var thumbnialUrlsInTappedCell: ([String], PhotosCell, Int, IndexPath)?
+    var previewingLocatedIndexPath: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,11 +100,10 @@ extension PhotosViewController {
         let subArrayCount = thumbnialUrls.count/numberOfRows * (indexPath.row + 1)
         cell.containerController = self
         cell.thumbnailUrls = thumbnialUrls.sub(of: 0..<subArrayCount)
-        weak var weakCell = cell
         cell.buttonDidClicked = { [weak self] button, index in
             guard self != nil else { return }
             let highQualityImageUrlStrings = self!.thumbnialUrls.map({ (url) -> String in
-                return (url as NSString).replacingOccurrences(of: "thumbnail", with: "large") as String
+                return url.replacingOccurrences(of: "thumbnail", with: "large")
             })
             
             var photoWrappers = [ZJPhotoWrapper]()
@@ -127,10 +126,6 @@ extension PhotosViewController {
             let browser = ZJPhotoBrowser(photoWrappers: photoWrappers, initialIndex: index)
             browser.show()
         }
-        cell.buttonTouchBegan = { [weak self] button, index in
-            guard self != nil, let strongCell = weakCell else { return }
-            self!.thumbnialUrlsInTappedCell = (strongCell.thumbnailUrls, strongCell, index, indexPath)
-        }
         
         return cell
     }
@@ -140,47 +135,48 @@ extension PhotosViewController {
     }
 }
 
-//MARK: - UIViewControllerPreviewingDelegate
+//MARK: 3D Touch Adapting
 @available(iOS 9.0, *)
 extension PhotosViewController: UIViewControllerPreviewingDelegate {
  
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let thumbnialUrlsInTappedCell = thumbnialUrlsInTappedCell else { return nil }
-        let index = thumbnialUrlsInTappedCell.2
-        let highQualityUrlString = (thumbnialUrlsInTappedCell.0[index] as NSString).replacingOccurrences(of: "thumbnail", with: "large") as String
-        let placeholderImage = thumbnialUrlsInTappedCell.1.imageButtons[index].image(for: .normal)
-        let wrapper = ZJPhotoWrapper(highQualityImageUrl: highQualityUrlString, shouldDownloadImage: true, placeholderImage: placeholderImage, imageContainer: nil)
+        let pointInTableView = previewingContext.sourceView.convert(location, to: tableView)
+        guard
+            let indexPath   = tableView.indexPathForRow(at: pointInTableView),
+            let cell        = tableView.cellForRow(at: indexPath) as? PhotosCell,
+            let imageButton = previewingContext.sourceView as? ImageButton
+        else { return nil }
+        previewingLocatedIndexPath = indexPath
+        let index                  = imageButton.tag
+        let highQualityImageUrl    = cell.thumbnailUrls[index].replacingOccurrences(of: "thumbnail", with: "large")
+        let placeholderImage       = imageButton.image(for: .normal)
+        let wrapper = ZJPhotoWrapper(highQualityImageUrl: highQualityImageUrl, shouldDownloadImage: true, placeholderImage: placeholderImage, imageContainer: nil)
         let target = ZJPhotoBrowserPreviewingController(photoWrapper: wrapper)
         target.preferredContentSize = target.supposedContentSize(with: placeholderImage)
         return target
     }
     
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        guard let thumbnialUrlsInTappedCell = thumbnialUrlsInTappedCell else { return }
+        guard
+            let indexPath   = previewingLocatedIndexPath,
+            let cell        = tableView.cellForRow(at: indexPath) as? PhotosCell,
+            let imageButton = previewingContext.sourceView as? ImageButton
+        else { return }
         var photoWrappers = [ZJPhotoWrapper]()
-        let highQualityImageUrlStrings = thumbnialUrlsInTappedCell.0.map({ (url) -> String in
-            return (url as NSString).replacingOccurrences(of: "thumbnail", with: "large") as String
+        let highQualityImageUrlStrings = cell.thumbnailUrls.map({ (url) -> String in
+            return url.replacingOccurrences(of: "thumbnail", with: "large")
         })
         var index = 0
         for urlString in highQualityImageUrlStrings {
-            let imageContainer = thumbnialUrlsInTappedCell.1.imageButtons[index]
+            let imageContainer   = cell.imageButtons[index]
             let placeholderImage = imageContainer.image(for: .normal)
             let wrapper = ZJPhotoWrapper(highQualityImageUrl: urlString, shouldDownloadImage: true, placeholderImage: placeholderImage, imageContainer: imageContainer)
             photoWrappers.append(wrapper)
             index += 1
         }
-        ZJPhotoBrowser(photoWrappers: photoWrappers, initialIndex: thumbnialUrlsInTappedCell.2).show(animated: false, enlargingAnimated: false)
+        let browser = ZJPhotoBrowser(photoWrappers: photoWrappers, initialIndex: imageButton.tag)
+        browser.show(animated: false, enlargingAnimated: false)
     }
-    
-//    override var previewActionItems: [UIPreviewActionItem] {
-//        let action1 = UIPreviewAction(title: "Copy", style: .default) { (action, controller) in
-//            
-//        }
-//        let action2 = UIPreviewAction(title: "Save", style: .default) { (action, controller) in
-//            
-//        }
-//        return [action1, action2]
-//    }
 }
 
 //MARK: -
@@ -193,7 +189,6 @@ class PhotosCell: UITableViewCell {
     
     weak var containerController: PhotosViewController?
     var buttonDidClicked: ((UIButton, Int) -> Swift.Void)?
-    var buttonTouchBegan: ((UIButton, Int) -> Swift.Void)?
     var thumbnailUrls = [String]() {
         didSet {
             let maxItemsInOneLine         = 3
@@ -213,16 +208,10 @@ class PhotosCell: UITableViewCell {
                     button = ImageButton()
                     contentView.addSubview(button)
                     imageButtons.append(button)
-                    button.tag                    = index
-                    button.clipsToBounds          = true
+                    button.tag           = index
+                    button.clipsToBounds = true
                     if let url = URL(string: thumbnailUrls[index]) {
                         button.sd_setImage(with: url, for: .normal, placeholderImage: UIImage(named: "whiteplaceholder"))
-                    }
-                    weak var weakButton = button
-                    let touchBeganUsingIndex = index
-                    button.touchBegan = { [weak self] in
-                        guard let strongButton = weakButton else { return }
-                        self?.buttonTouchBegan?(strongButton, touchBeganUsingIndex)
                     }
                     button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
                     let buttonX = horiozntalMargin + CGFloat(index % maxItemsInOneLine) * (buttonSize + padding)
@@ -230,7 +219,6 @@ class PhotosCell: UITableViewCell {
                     button.frame = CGRect(x: buttonX, y: buttonY, width: buttonSize, height: buttonSize)
                     button.imageView?.contentMode = .scaleAspectFill
                     if #available(iOS 9.0, *), let containerController = containerController {
-                        //            containerController.unregisterForPreviewing(withContext: <#T##UIViewControllerPreviewing#>)
                         containerController.registerForPreviewing(with: containerController, sourceView: button)
                     }
                 }
@@ -290,15 +278,8 @@ class ImageButton: UIButton {
         debugPrint("---ImageButton")
     }
     
-    var touchBegan: (() -> Swift.Void)?
-    
     override func imageRect(forContentRect contentRect: CGRect) -> CGRect {
         return contentRect
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        touchBegan?()
-        super.touchesBegan(touches, with: event)
     }
 }
 

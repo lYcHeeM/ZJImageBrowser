@@ -82,11 +82,6 @@ extension ZJPhotoCell {
         scrollView.delegate                       = self
         scrollView.addGestureRecognizer(singleTap)
         scrollView.addGestureRecognizer(doubleTap)
-        // 为避免在layoutSubviews中设置scrollView和imageView的frame,
-        // 并注意到为了在页与页之间插入间隔, itemSize尾部有一小段非实际内容的间距用于实现此效果, 
-        // 此处直接固定scrollView的frame
-        // Note: in order to avoid setting scrollView and imageView's frame in 'layoutSubviews' function, and realizing there is a pageSpacing in itemWidth, I fixed the scrollView's frame at this place.
-//        scrollView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         
         scrollView.addSubview(imageView)
         imageView.isUserInteractionEnabled = true

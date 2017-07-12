@@ -15,6 +15,10 @@ class ZJPhotoBrowser: UICollectionView {
     static let buttonHeight           : CGFloat = 27
     static let pageSpacing            : CGFloat = 10
     
+    static let albumAuthorizingFailedHint = "Saving failed! Can't access your ablum, check in \"Settings\"->\"Privacy\"->\"Photos\"."
+    static let imageSavingSucceedHint     = "Saving succeed"
+    static let imageSavingFailedHint      = "Saving failed!"
+    
     fileprivate var photoWrappers     = [ZJPhotoWrapper]()
     fileprivate var isShowing         = false
     fileprivate var saveButton        = UIButton(type: .system)
@@ -249,7 +253,7 @@ extension ZJPhotoBrowser {
         if status == .restricted || status == .denied {
             albumAuthorizingFailed?(self, status)
             guard usesInternalHUD else { return }
-            ZJPhotoBrowserHUD.show(message: "Saving failed! Can't access your ablum, check in \"Settings\"->\"Privacy\"->\"Photos\".", inView: self, needsIndicator: false, hideAfter: 2.5)
+            ZJPhotoBrowserHUD.show(message: ZJPhotoBrowser.albumAuthorizingFailedHint, inView: self, needsIndicator: false, hideAfter: 2.5)
             return
         }
         if visibleCells.count == 1, let photoCell = visibleCells.first as? ZJPhotoCell, let image = photoCell.image {
@@ -262,9 +266,9 @@ extension ZJPhotoBrowser {
         guard usesInternalHUD else { return }
         var alertMessage = ""
         if error == nil {
-            alertMessage = "Saving succeed!"
+            alertMessage = ZJPhotoBrowser.imageSavingSucceedHint
         } else {
-            alertMessage = "Saving failed!"
+            alertMessage = ZJPhotoBrowser.imageSavingFailedHint
         }
         hud?.hide(animated: false)
         ZJPhotoBrowserHUD.show(message: alertMessage, inView: self, needsIndicator: false)

@@ -8,6 +8,7 @@
 
 import UIKit
 import SDWebImage
+import Photos
 
 class ZJPhotoBrowserPreviewingController: UIViewController {
 
@@ -73,5 +74,32 @@ class ZJPhotoBrowserPreviewingController: UIViewController {
                 weakProgressView?.removeFromSuperview()
             })
         }
+    }
+    
+    @available(iOS 9.0, *)
+    override var previewActionItems: [UIPreviewActionItem] {
+        let action1 = UIPreviewAction(title: "Copy to pastboard", style: .default) { (action, controller) in
+            UIPasteboard.general.image = self.image
+        }
+        let action2 = UIPreviewAction(title: "Save to album", style: .default) { (action, controller) in
+            let status = PHPhotoLibrary.authorizationStatus()
+            if status == .restricted || status == .denied {
+                ZJPhotoBrowserHUD.show(message: ZJPhotoBrowser.albumAuthorizingFailedHint, inView: self.view, needsIndicator: false, hideAfter: 2.5)
+                return
+            }
+            guard let image = self.image else { return }
+            UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+        }
+        return [action1, action2]
+    }
+    
+    @objc private func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: Any?) {
+        var alertMessage = ""
+        if error == nil {
+            alertMessage = ZJPhotoBrowser.imageSavingSucceedHint
+        } else {
+            alertMessage = ZJPhotoBrowser.imageSavingFailedHint
+        }
+        ZJPhotoBrowserHUD.show(message: alertMessage, inView: nil, needsIndicator: false)
     }
 }
