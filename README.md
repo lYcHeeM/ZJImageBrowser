@@ -1,5 +1,5 @@
-# ZJPhotoBrowser
-An simple iOS photo browser based on UICollectionView written in Swift.
+# ZJImageBrowser
+An simple iOS image browser based on UICollectionView written in Swift.
 
 ## Requirements
 
@@ -18,26 +18,26 @@ let urlStrings: [String] = [
             "http://ww2.sinaimg.cn/bmiddle/642beb18gw1ep3629gfm0g206o050b2a.gif",
             "https://wx2.sinaimg.cn/bmiddle/0064zot3ly1fds1693k1vj30rs12375r.jpg"
         ]
-var photoWrappers = [ZJPhotoWrapper]()
+var imageWrappers = [ZJImageWrapper]()
 for urlStr in urlStrings {
-    let photoWrapper = ZJPhotoWrapper(highQualityImageUrl: urlStr, shouldDownloadImage: true, placeholderImage: nil, imageContainer: nil)
-    photoWrappers.append(photoWrapper)
+    let imageWrapper = ZJImageWrapper(highQualityImageUrl: urlStr, shouldDownloadImage: true, placeholderImage: nil, imageContainer: nil)
+    imageWrappers.append(imageWrapper)
 }
-let browser = ZJPhotoBrowser(photoWrappers: photoWrappers)
+let browser = ZJImageBrowser(imageWrappers: imageWrappers)
 browser.show()
 ```
 
 ### Specify initial image index
 ```swift
-let browser = ZJPhotoBrowser(photoWrappers: photoWrappers, initialIndex: yourSpecifiedInitialIndex)
+let browser = ZJImageBrowser(imageWrappers: imageWrappers, initialIndex: yourSpecifiedInitialIndex)
 browser.show()
 // Also can: browser.show(at: yourSpecifiedInitialIndex)
 ```
 
 ### Restrict bounds
-By default, ZJPhotoBrowser is full screen displayed. You can also give a rect to make it smaller and show at where you want.
+By default, ZJImageBrowser is full screen displayed. You can also give a rect to make it smaller and show at where you want.
 ```swift
-let browser = ZJPhotoBrowser(photoWrappers: photoWrappers, initialIndex: yourSpecifiedInitialIndex, containerRect: yourSpecifiedRect)
+let browser = ZJImageBrowser(imageWrappers: imageWrappers, initialIndex: yourSpecifiedInitialIndex, containerRect: yourSpecifiedRect)
 browser.show()
 ```
 
@@ -45,14 +45,14 @@ browser.show()
 
 #### CocoaPods (iOS 8+, OS X 10.9+)
 
-You can use [CocoaPods](http://cocoapods.org/) to install `ZJPhotoBrowser` by adding it to your `Podfile`:
+You can use [CocoaPods](http://cocoapods.org/) to install `ZJImageBrowser` by adding it to your `Podfile`:
 
 ```ruby
 platform :ios, '8.0'
 use_frameworks!
 
 target 'YourAppTargetName' do
-	pod 'ZJPhotoBrowser'
+	pod 'ZJImageBrowser'
 end
 ```
 
@@ -60,4 +60,4 @@ Requires CocoaPods version 1.0.0+
 
 ## License
 
-ZJPhotoBrowser is released under the MIT license. See LICENSE for details.
+ZJImageBrowser is released under the MIT license. See LICENSE for details.

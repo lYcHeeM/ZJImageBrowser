@@ -1,10 +1,10 @@
 
 Pod::Spec.new do |s|
-  s.name         = "ZJPhotoBrowser"
+  s.name         = "ZJImageBrowser"
   s.version      = "0.0.1"
   s.summary      = "An simple iOS photo browser based on UICollectionView written in Swift."
 
-  s.homepage     = "https://github.com/lYcHeeM/ZJPhotoBrowser"
+  s.homepage     = "https://github.com/lYcHeeM/ZJImageBrowser"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
   s.license    = "MIT"
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
   # s.watchos.deployment_target = "2.0"
   # s.tvos.deployment_target = "9.0"
 
-  s.source       = { :git => "https://github.com/lYcHeeM/ZJPhotoBrowser.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/lYcHeeM/ZJImageBrowser.git", :tag => "#{s.version}" }
   s.source_files  = "ZJPhotoBrowser/ZJ*.swift"
   s.requires_arc = true
   s.frameworks = 'Photos'

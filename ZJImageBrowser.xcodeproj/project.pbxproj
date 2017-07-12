@@ -7,39 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2431500135C10D0E372EDA14 /* Pods_ZJPhotoBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AB1B98737860F6B92588F26 /* Pods_ZJPhotoBrowser.framework */; };
-		B227210D1F0FC58500BC689B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B227210B1F0FC58500BC689B /* LaunchScreen.storyboard */; };
-		B266D7661F14B5D0003840E7 /* ZJImageBrowserPreviewingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7651F14B5D0003840E7 /* ZJImageBrowserPreviewingController.swift */; };
-		B276FBB71F10F2EE00B1D4C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB01F10F2EE00B1D4C4 /* AppDelegate.swift */; };
-		B276FBB81F10F2EE00B1D4C4 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB11F10F2EE00B1D4C4 /* PhotosViewController.swift */; };
-		B276FBB91F10F2EE00B1D4C4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB21F10F2EE00B1D4C4 /* ViewController.swift */; };
-		B276FBBA1F10F2EE00B1D4C4 /* ZJImageBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB31F10F2EE00B1D4C4 /* ZJImageBrowser.swift */; };
-		B276FBBB1F10F2EE00B1D4C4 /* ZJImageBrowserHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB41F10F2EE00B1D4C4 /* ZJImageBrowserHUD.swift */; };
-		B276FBBC1F10F2EE00B1D4C4 /* ZJImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB51F10F2EE00B1D4C4 /* ZJImageCell.swift */; };
-		B276FBBD1F10F2EE00B1D4C4 /* ZJProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB61F10F2EE00B1D4C4 /* ZJProgressView.swift */; };
-		B276FBC01F10F2F800B1D4C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B276FBBE1F10F2F800B1D4C4 /* Main.storyboard */; };
-		B276FBC21F10F31B00B1D4C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B276FBC11F10F31B00B1D4C4 /* Assets.xcassets */; };
-		B2B97B0E1F10A1B3004D67A8 /* ZJImageWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B97B0D1F10A1B3004D67A8 /* ZJImageWrapper.swift */; };
+		409943853B603D0A630BE692 /* Pods_ZJImageBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1BB3940EC00EFAF3F8BFF0 /* Pods_ZJImageBrowser.framework */; };
+		B266D7781F161BCA003840E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7681F161BCA003840E7 /* AppDelegate.swift */; };
+		B266D7791F161BCA003840E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B266D7691F161BCA003840E7 /* Assets.xcassets */; };
+		B266D77A1F161BCA003840E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B266D76A1F161BCA003840E7 /* LaunchScreen.storyboard */; };
+		B266D77B1F161BCA003840E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B266D76C1F161BCA003840E7 /* Main.storyboard */; };
+		B266D77D1F161BCA003840E7 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D76F1F161BCA003840E7 /* PhotosViewController.swift */; };
+		B266D77E1F161BCA003840E7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7701F161BCA003840E7 /* ViewController.swift */; };
+		B266D77F1F161BCA003840E7 /* ZJImageBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7721F161BCA003840E7 /* ZJImageBrowser.swift */; };
+		B266D7801F161BCA003840E7 /* ZJImageBrowserHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7731F161BCA003840E7 /* ZJImageBrowserHUD.swift */; };
+		B266D7811F161BCA003840E7 /* ZJImageBrowserPreviewingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7741F161BCA003840E7 /* ZJImageBrowserPreviewingController.swift */; };
+		B266D7821F161BCA003840E7 /* ZJImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7751F161BCA003840E7 /* ZJImageCell.swift */; };
+		B266D7831F161BCA003840E7 /* ZJImageWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7761F161BCA003840E7 /* ZJImageWrapper.swift */; };
+		B266D7841F161BCA003840E7 /* ZJProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7771F161BCA003840E7 /* ZJProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0149E6D2516EB3284CF2A2F8 /* Pods-ZJPhotoBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZJPhotoBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZJPhotoBrowser/Pods-ZJPhotoBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		1AB1B98737860F6B92588F26 /* Pods_ZJPhotoBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZJPhotoBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		490F92ACAB21631C056491D3 /* Pods-ZJPhotoBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZJPhotoBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZJPhotoBrowser/Pods-ZJPhotoBrowser.debug.xcconfig"; sourceTree = "<group>"; };
+		8813A391FCD8FA9AFA66606C /* Pods-ZJImageBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZJImageBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZJImageBrowser/Pods-ZJImageBrowser.debug.xcconfig"; sourceTree = "<group>"; };
+		948AC85138F4DA40B11B13F6 /* Pods-ZJImageBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZJImageBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZJImageBrowser/Pods-ZJImageBrowser.release.xcconfig"; sourceTree = "<group>"; };
+		AE1BB3940EC00EFAF3F8BFF0 /* Pods_ZJImageBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZJImageBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B22720FF1F0FC58500BC689B /* ZJImageBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZJImageBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B227210C1F0FC58500BC689B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		B227210E1F0FC58500BC689B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B266D7651F14B5D0003840E7 /* ZJImageBrowserPreviewingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageBrowserPreviewingController.swift; sourceTree = "<group>"; };
-		B276FBB01F10F2EE00B1D4C4 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B276FBB11F10F2EE00B1D4C4 /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
-		B276FBB21F10F2EE00B1D4C4 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B276FBB31F10F2EE00B1D4C4 /* ZJImageBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageBrowser.swift; sourceTree = "<group>"; };
-		B276FBB41F10F2EE00B1D4C4 /* ZJImageBrowserHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageBrowserHUD.swift; sourceTree = "<group>"; };
-		B276FBB51F10F2EE00B1D4C4 /* ZJImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageCell.swift; sourceTree = "<group>"; };
-		B276FBB61F10F2EE00B1D4C4 /* ZJProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJProgressView.swift; sourceTree = "<group>"; };
-		B276FBBF1F10F2F800B1D4C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B276FBC11F10F31B00B1D4C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B2B97B0D1F10A1B3004D67A8 /* ZJImageWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageWrapper.swift; sourceTree = "<group>"; };
+		B266D7681F161BCA003840E7 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B266D7691F161BCA003840E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B266D76B1F161BCA003840E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B266D76D1F161BCA003840E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B266D76E1F161BCA003840E7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B266D76F1F161BCA003840E7 /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
+		B266D7701F161BCA003840E7 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B266D7721F161BCA003840E7 /* ZJImageBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageBrowser.swift; sourceTree = "<group>"; };
+		B266D7731F161BCA003840E7 /* ZJImageBrowserHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageBrowserHUD.swift; sourceTree = "<group>"; };
+		B266D7741F161BCA003840E7 /* ZJImageBrowserPreviewingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageBrowserPreviewingController.swift; sourceTree = "<group>"; };
+		B266D7751F161BCA003840E7 /* ZJImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageCell.swift; sourceTree = "<group>"; };
+		B266D7761F161BCA003840E7 /* ZJImageWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageWrapper.swift; sourceTree = "<group>"; };
+		B266D7771F161BCA003840E7 /* ZJProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJProgressView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2431500135C10D0E372EDA14 /* Pods_ZJPhotoBrowser.framework in Frameworks */,
+				409943853B603D0A630BE692 /* Pods_ZJImageBrowser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				1AB1B98737860F6B92588F26 /* Pods_ZJPhotoBrowser.framework */,
+				AE1BB3940EC00EFAF3F8BFF0 /* Pods_ZJImageBrowser.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -67,6 +71,8 @@
 			children = (
 				490F92ACAB21631C056491D3 /* Pods-ZJPhotoBrowser.debug.xcconfig */,
 				0149E6D2516EB3284CF2A2F8 /* Pods-ZJPhotoBrowser.release.xcconfig */,
+				8813A391FCD8FA9AFA66606C /* Pods-ZJImageBrowser.debug.xcconfig */,
+				948AC85138F4DA40B11B13F6 /* Pods-ZJImageBrowser.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -74,7 +80,7 @@
 		B22720F61F0FC58500BC689B = {
 			isa = PBXGroup;
 			children = (
-				B22721011F0FC58500BC689B /* ZJPhotoBrowser */,
+				B266D7671F161BCA003840E7 /* ZJImageBrowser */,
 				B22721001F0FC58500BC689B /* Products */,
 				3D36C713AA6B742907D4C87B /* Pods */,
 				109DDF3EB908D89F16C4C78E /* Frameworks */,
@@ -89,32 +95,32 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B22721011F0FC58500BC689B /* ZJPhotoBrowser */ = {
+		B266D7671F161BCA003840E7 /* ZJImageBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				B266D7321F10FCB2003840E7 /* ZJImageBrowser */,
-				B276FBB01F10F2EE00B1D4C4 /* AppDelegate.swift */,
-				B276FBB11F10F2EE00B1D4C4 /* PhotosViewController.swift */,
-				B276FBB21F10F2EE00B1D4C4 /* ViewController.swift */,
-				B276FBBE1F10F2F800B1D4C4 /* Main.storyboard */,
-				B227210B1F0FC58500BC689B /* LaunchScreen.storyboard */,
-				B276FBC11F10F31B00B1D4C4 /* Assets.xcassets */,
-				B227210E1F0FC58500BC689B /* Info.plist */,
+				B266D7711F161BCA003840E7 /* ZJImageBrowser */,
+				B266D7681F161BCA003840E7 /* AppDelegate.swift */,
+				B266D76F1F161BCA003840E7 /* PhotosViewController.swift */,
+				B266D7701F161BCA003840E7 /* ViewController.swift */,
+				B266D76A1F161BCA003840E7 /* LaunchScreen.storyboard */,
+				B266D76C1F161BCA003840E7 /* Main.storyboard */,
+				B266D7691F161BCA003840E7 /* Assets.xcassets */,
+				B266D76E1F161BCA003840E7 /* Info.plist */,
 			);
-			path = ZJPhotoBrowser;
+			path = ZJImageBrowser;
 			sourceTree = "<group>";
 		};
-		B266D7321F10FCB2003840E7 /* ZJImageBrowser */ = {
+		B266D7711F161BCA003840E7 /* ZJImageBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				B276FBB31F10F2EE00B1D4C4 /* ZJImageBrowser.swift */,
-				B276FBB51F10F2EE00B1D4C4 /* ZJImageCell.swift */,
-				B2B97B0D1F10A1B3004D67A8 /* ZJImageWrapper.swift */,
-				B276FBB41F10F2EE00B1D4C4 /* ZJImageBrowserHUD.swift */,
-				B276FBB61F10F2EE00B1D4C4 /* ZJProgressView.swift */,
-				B266D7651F14B5D0003840E7 /* ZJImageBrowserPreviewingController.swift */,
+				B266D7721F161BCA003840E7 /* ZJImageBrowser.swift */,
+				B266D7731F161BCA003840E7 /* ZJImageBrowserHUD.swift */,
+				B266D7741F161BCA003840E7 /* ZJImageBrowserPreviewingController.swift */,
+				B266D7751F161BCA003840E7 /* ZJImageCell.swift */,
+				B266D7761F161BCA003840E7 /* ZJImageWrapper.swift */,
+				B266D7771F161BCA003840E7 /* ZJProgressView.swift */,
 			);
-			name = ZJImageBrowser;
+			path = ZJImageBrowser;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,9 +186,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B227210D1F0FC58500BC689B /* LaunchScreen.storyboard in Resources */,
-				B276FBC21F10F31B00B1D4C4 /* Assets.xcassets in Resources */,
-				B276FBC01F10F2F800B1D4C4 /* Main.storyboard in Resources */,
+				B266D77B1F161BCA003840E7 /* Main.storyboard in Resources */,
+				B266D7791F161BCA003840E7 /* Assets.xcassets in Resources */,
+				B266D77A1F161BCA003840E7 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,7 +222,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZJPhotoBrowser/Pods-ZJPhotoBrowser-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZJImageBrowser/Pods-ZJImageBrowser-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E269A9F2CA2B1099192518FC /* [CP] Embed Pods Frameworks */ = {
@@ -231,7 +237,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZJPhotoBrowser/Pods-ZJPhotoBrowser-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZJImageBrowser/Pods-ZJImageBrowser-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -241,33 +247,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B276FBB91F10F2EE00B1D4C4 /* ViewController.swift in Sources */,
-				B276FBB71F10F2EE00B1D4C4 /* AppDelegate.swift in Sources */,
-				B276FBBC1F10F2EE00B1D4C4 /* ZJImageCell.swift in Sources */,
-				B276FBB81F10F2EE00B1D4C4 /* PhotosViewController.swift in Sources */,
-				B276FBBA1F10F2EE00B1D4C4 /* ZJImageBrowser.swift in Sources */,
-				B266D7661F14B5D0003840E7 /* ZJImageBrowserPreviewingController.swift in Sources */,
-				B276FBBB1F10F2EE00B1D4C4 /* ZJImageBrowserHUD.swift in Sources */,
-				B2B97B0E1F10A1B3004D67A8 /* ZJImageWrapper.swift in Sources */,
-				B276FBBD1F10F2EE00B1D4C4 /* ZJProgressView.swift in Sources */,
+				B266D7801F161BCA003840E7 /* ZJImageBrowserHUD.swift in Sources */,
+				B266D77E1F161BCA003840E7 /* ViewController.swift in Sources */,
+				B266D7811F161BCA003840E7 /* ZJImageBrowserPreviewingController.swift in Sources */,
+				B266D7781F161BCA003840E7 /* AppDelegate.swift in Sources */,
+				B266D7821F161BCA003840E7 /* ZJImageCell.swift in Sources */,
+				B266D77F1F161BCA003840E7 /* ZJImageBrowser.swift in Sources */,
+				B266D77D1F161BCA003840E7 /* PhotosViewController.swift in Sources */,
+				B266D7841F161BCA003840E7 /* ZJProgressView.swift in Sources */,
+				B266D7831F161BCA003840E7 /* ZJImageWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		B227210B1F0FC58500BC689B /* LaunchScreen.storyboard */ = {
+		B266D76A1F161BCA003840E7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B227210C1F0FC58500BC689B /* Base */,
+				B266D76B1F161BCA003840E7 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-		B276FBBE1F10F2F800B1D4C4 /* Main.storyboard */ = {
+		B266D76C1F161BCA003840E7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B276FBBF1F10F2F800B1D4C4 /* Base */,
+				B266D76D1F161BCA003840E7 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -316,7 +322,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -360,7 +366,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -370,11 +376,11 @@
 		};
 		B22721121F0FC58500BC689B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 490F92ACAB21631C056491D3 /* Pods-ZJPhotoBrowser.debug.xcconfig */;
+			baseConfigurationReference = 8813A391FCD8FA9AFA66606C /* Pods-ZJImageBrowser.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7G9Q3YE88T;
-				INFOPLIST_FILE = ZJPhotoBrowser/Info.plist;
+				INFOPLIST_FILE = ZJImageBrowser/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rickluo.ZJPhotoBrowser;
@@ -386,11 +392,11 @@
 		};
 		B22721131F0FC58500BC689B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0149E6D2516EB3284CF2A2F8 /* Pods-ZJPhotoBrowser.release.xcconfig */;
+			baseConfigurationReference = 948AC85138F4DA40B11B13F6 /* Pods-ZJImageBrowser.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7G9Q3YE88T;
-				INFOPLIST_FILE = ZJPhotoBrowser/Info.plist;
+				INFOPLIST_FILE = ZJImageBrowser/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rickluo.ZJPhotoBrowser;
