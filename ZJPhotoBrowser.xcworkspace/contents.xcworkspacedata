@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:ZJPhotoBrowser.xcodeproj">
+      location = "group:/Users/luozhijun/Desktop/Demo/&#x81ea;&#x5199;/UI/ZJPhotoBrowser/ZJImageBrowser.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

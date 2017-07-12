@@ -9,37 +9,37 @@
 /* Begin PBXBuildFile section */
 		2431500135C10D0E372EDA14 /* Pods_ZJPhotoBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AB1B98737860F6B92588F26 /* Pods_ZJPhotoBrowser.framework */; };
 		B227210D1F0FC58500BC689B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B227210B1F0FC58500BC689B /* LaunchScreen.storyboard */; };
-		B266D7661F14B5D0003840E7 /* ZJPhotoBrowserPreviewingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7651F14B5D0003840E7 /* ZJPhotoBrowserPreviewingController.swift */; };
+		B266D7661F14B5D0003840E7 /* ZJImageBrowserPreviewingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7651F14B5D0003840E7 /* ZJImageBrowserPreviewingController.swift */; };
 		B276FBB71F10F2EE00B1D4C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB01F10F2EE00B1D4C4 /* AppDelegate.swift */; };
 		B276FBB81F10F2EE00B1D4C4 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB11F10F2EE00B1D4C4 /* PhotosViewController.swift */; };
 		B276FBB91F10F2EE00B1D4C4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB21F10F2EE00B1D4C4 /* ViewController.swift */; };
-		B276FBBA1F10F2EE00B1D4C4 /* ZJPhotoBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB31F10F2EE00B1D4C4 /* ZJPhotoBrowser.swift */; };
-		B276FBBB1F10F2EE00B1D4C4 /* ZJPhotoBrowserHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB41F10F2EE00B1D4C4 /* ZJPhotoBrowserHUD.swift */; };
-		B276FBBC1F10F2EE00B1D4C4 /* ZJPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB51F10F2EE00B1D4C4 /* ZJPhotoCell.swift */; };
+		B276FBBA1F10F2EE00B1D4C4 /* ZJImageBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB31F10F2EE00B1D4C4 /* ZJImageBrowser.swift */; };
+		B276FBBB1F10F2EE00B1D4C4 /* ZJImageBrowserHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB41F10F2EE00B1D4C4 /* ZJImageBrowserHUD.swift */; };
+		B276FBBC1F10F2EE00B1D4C4 /* ZJImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB51F10F2EE00B1D4C4 /* ZJImageCell.swift */; };
 		B276FBBD1F10F2EE00B1D4C4 /* ZJProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B276FBB61F10F2EE00B1D4C4 /* ZJProgressView.swift */; };
 		B276FBC01F10F2F800B1D4C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B276FBBE1F10F2F800B1D4C4 /* Main.storyboard */; };
 		B276FBC21F10F31B00B1D4C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B276FBC11F10F31B00B1D4C4 /* Assets.xcassets */; };
-		B2B97B0E1F10A1B3004D67A8 /* ZJPhotoWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B97B0D1F10A1B3004D67A8 /* ZJPhotoWrapper.swift */; };
+		B2B97B0E1F10A1B3004D67A8 /* ZJImageWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B97B0D1F10A1B3004D67A8 /* ZJImageWrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0149E6D2516EB3284CF2A2F8 /* Pods-ZJPhotoBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZJPhotoBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZJPhotoBrowser/Pods-ZJPhotoBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		1AB1B98737860F6B92588F26 /* Pods_ZJPhotoBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZJPhotoBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		490F92ACAB21631C056491D3 /* Pods-ZJPhotoBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZJPhotoBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZJPhotoBrowser/Pods-ZJPhotoBrowser.debug.xcconfig"; sourceTree = "<group>"; };
-		B22720FF1F0FC58500BC689B /* ZJPhotoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZJPhotoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B22720FF1F0FC58500BC689B /* ZJImageBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZJImageBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B227210C1F0FC58500BC689B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B227210E1F0FC58500BC689B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B266D7651F14B5D0003840E7 /* ZJPhotoBrowserPreviewingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJPhotoBrowserPreviewingController.swift; sourceTree = "<group>"; };
+		B266D7651F14B5D0003840E7 /* ZJImageBrowserPreviewingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageBrowserPreviewingController.swift; sourceTree = "<group>"; };
 		B276FBB01F10F2EE00B1D4C4 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B276FBB11F10F2EE00B1D4C4 /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		B276FBB21F10F2EE00B1D4C4 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B276FBB31F10F2EE00B1D4C4 /* ZJPhotoBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJPhotoBrowser.swift; sourceTree = "<group>"; };
-		B276FBB41F10F2EE00B1D4C4 /* ZJPhotoBrowserHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJPhotoBrowserHUD.swift; sourceTree = "<group>"; };
-		B276FBB51F10F2EE00B1D4C4 /* ZJPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJPhotoCell.swift; sourceTree = "<group>"; };
+		B276FBB31F10F2EE00B1D4C4 /* ZJImageBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageBrowser.swift; sourceTree = "<group>"; };
+		B276FBB41F10F2EE00B1D4C4 /* ZJImageBrowserHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageBrowserHUD.swift; sourceTree = "<group>"; };
+		B276FBB51F10F2EE00B1D4C4 /* ZJImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageCell.swift; sourceTree = "<group>"; };
 		B276FBB61F10F2EE00B1D4C4 /* ZJProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJProgressView.swift; sourceTree = "<group>"; };
 		B276FBBF1F10F2F800B1D4C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B276FBC11F10F31B00B1D4C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B2B97B0D1F10A1B3004D67A8 /* ZJPhotoWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJPhotoWrapper.swift; sourceTree = "<group>"; };
+		B2B97B0D1F10A1B3004D67A8 /* ZJImageWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageWrapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +84,7 @@
 		B22721001F0FC58500BC689B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B22720FF1F0FC58500BC689B /* ZJPhotoBrowser.app */,
+				B22720FF1F0FC58500BC689B /* ZJImageBrowser.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -92,7 +92,7 @@
 		B22721011F0FC58500BC689B /* ZJPhotoBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				B266D7321F10FCB2003840E7 /* ZJPhotoBrowser */,
+				B266D7321F10FCB2003840E7 /* ZJImageBrowser */,
 				B276FBB01F10F2EE00B1D4C4 /* AppDelegate.swift */,
 				B276FBB11F10F2EE00B1D4C4 /* PhotosViewController.swift */,
 				B276FBB21F10F2EE00B1D4C4 /* ViewController.swift */,
@@ -104,25 +104,25 @@
 			path = ZJPhotoBrowser;
 			sourceTree = "<group>";
 		};
-		B266D7321F10FCB2003840E7 /* ZJPhotoBrowser */ = {
+		B266D7321F10FCB2003840E7 /* ZJImageBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				B276FBB31F10F2EE00B1D4C4 /* ZJPhotoBrowser.swift */,
-				B276FBB51F10F2EE00B1D4C4 /* ZJPhotoCell.swift */,
-				B2B97B0D1F10A1B3004D67A8 /* ZJPhotoWrapper.swift */,
-				B276FBB41F10F2EE00B1D4C4 /* ZJPhotoBrowserHUD.swift */,
+				B276FBB31F10F2EE00B1D4C4 /* ZJImageBrowser.swift */,
+				B276FBB51F10F2EE00B1D4C4 /* ZJImageCell.swift */,
+				B2B97B0D1F10A1B3004D67A8 /* ZJImageWrapper.swift */,
+				B276FBB41F10F2EE00B1D4C4 /* ZJImageBrowserHUD.swift */,
 				B276FBB61F10F2EE00B1D4C4 /* ZJProgressView.swift */,
-				B266D7651F14B5D0003840E7 /* ZJPhotoBrowserPreviewingController.swift */,
+				B266D7651F14B5D0003840E7 /* ZJImageBrowserPreviewingController.swift */,
 			);
-			name = ZJPhotoBrowser;
+			name = ZJImageBrowser;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B22720FE1F0FC58500BC689B /* ZJPhotoBrowser */ = {
+		B22720FE1F0FC58500BC689B /* ZJImageBrowser */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B22721111F0FC58500BC689B /* Build configuration list for PBXNativeTarget "ZJPhotoBrowser" */;
+			buildConfigurationList = B22721111F0FC58500BC689B /* Build configuration list for PBXNativeTarget "ZJImageBrowser" */;
 			buildPhases = (
 				7718AAB71A28A9AB782AF611 /* [CP] Check Pods Manifest.lock */,
 				B22720FB1F0FC58500BC689B /* Sources */,
@@ -135,9 +135,9 @@
 			);
 			dependencies = (
 			);
-			name = ZJPhotoBrowser;
+			name = ZJImageBrowser;
 			productName = ZJPhotoBrowser;
-			productReference = B22720FF1F0FC58500BC689B /* ZJPhotoBrowser.app */;
+			productReference = B22720FF1F0FC58500BC689B /* ZJImageBrowser.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -157,7 +157,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B22720FA1F0FC58500BC689B /* Build configuration list for PBXProject "ZJPhotoBrowser" */;
+			buildConfigurationList = B22720FA1F0FC58500BC689B /* Build configuration list for PBXProject "ZJImageBrowser" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -170,7 +170,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B22720FE1F0FC58500BC689B /* ZJPhotoBrowser */,
+				B22720FE1F0FC58500BC689B /* ZJImageBrowser */,
 			);
 		};
 /* End PBXProject section */
@@ -243,12 +243,12 @@
 			files = (
 				B276FBB91F10F2EE00B1D4C4 /* ViewController.swift in Sources */,
 				B276FBB71F10F2EE00B1D4C4 /* AppDelegate.swift in Sources */,
-				B276FBBC1F10F2EE00B1D4C4 /* ZJPhotoCell.swift in Sources */,
+				B276FBBC1F10F2EE00B1D4C4 /* ZJImageCell.swift in Sources */,
 				B276FBB81F10F2EE00B1D4C4 /* PhotosViewController.swift in Sources */,
-				B276FBBA1F10F2EE00B1D4C4 /* ZJPhotoBrowser.swift in Sources */,
-				B266D7661F14B5D0003840E7 /* ZJPhotoBrowserPreviewingController.swift in Sources */,
-				B276FBBB1F10F2EE00B1D4C4 /* ZJPhotoBrowserHUD.swift in Sources */,
-				B2B97B0E1F10A1B3004D67A8 /* ZJPhotoWrapper.swift in Sources */,
+				B276FBBA1F10F2EE00B1D4C4 /* ZJImageBrowser.swift in Sources */,
+				B266D7661F14B5D0003840E7 /* ZJImageBrowserPreviewingController.swift in Sources */,
+				B276FBBB1F10F2EE00B1D4C4 /* ZJImageBrowserHUD.swift in Sources */,
+				B2B97B0E1F10A1B3004D67A8 /* ZJImageWrapper.swift in Sources */,
 				B276FBBD1F10F2EE00B1D4C4 /* ZJProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -403,7 +403,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B22720FA1F0FC58500BC689B /* Build configuration list for PBXProject "ZJPhotoBrowser" */ = {
+		B22720FA1F0FC58500BC689B /* Build configuration list for PBXProject "ZJImageBrowser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B227210F1F0FC58500BC689B /* Debug */,
@@ -412,7 +412,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B22721111F0FC58500BC689B /* Build configuration list for PBXNativeTarget "ZJPhotoBrowser" */ = {
+		B22721111F0FC58500BC689B /* Build configuration list for PBXNativeTarget "ZJImageBrowser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B22721121F0FC58500BC689B /* Debug */,

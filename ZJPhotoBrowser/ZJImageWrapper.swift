@@ -1,6 +1,6 @@
 //
-//  ZJPhotoWrapper.swift
-//  ZJPhotoBrowser
+//  ZJImageWrapper.swift
+//  ZJImageBrowser
 //
 //  Created by luozhijun on 2017/7/8.
 //  Copyright © 2017年 RickLuo. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ZJPhotoWrapper: NSObject {
+class ZJImageWrapper: NSObject {
     var highQualityImageUrl: String = ""
     var shouldDownloadImage: Bool = true
     var progressStyle      : ZJProgressViewStyle = .pie

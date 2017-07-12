@@ -1,5 +1,5 @@
 //
-//  ZJPhotoBrowserHUD.swift
+//  ZJImageBrowserHUD.swift
 //  ProgressView
 //
 //  Created by luozhijun on 2017/7/7.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ZJPhotoBrowserHUD: UIToolbar {
+class ZJImageBrowserHUD: UIToolbar {
 
     fileprivate var label = UILabel()
     fileprivate var indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
@@ -44,7 +44,7 @@ class ZJPhotoBrowserHUD: UIToolbar {
     }
     
     @discardableResult
-    class func show(message: String?, inView view: UIView? = nil, animated: Bool = true, needsIndicator: Bool = true, hideAfter interval: TimeInterval? = 1.2) -> ZJPhotoBrowserHUD? {
+    class func show(message: String?, inView view: UIView? = nil, animated: Bool = true, needsIndicator: Bool = true, hideAfter interval: TimeInterval? = 1.2) -> ZJImageBrowserHUD? {
         var superView: UIView!
         if view != nil {
             superView = view
@@ -54,7 +54,7 @@ class ZJPhotoBrowserHUD: UIToolbar {
             return nil
         }
         
-        let hud = ZJPhotoBrowserHUD(message: message)
+        let hud = ZJImageBrowserHUD(message: message)
         hud.indicator.isHidden = !needsIndicator
         superView.addSubview(hud)
         let verticalMargin  : CGFloat = 15

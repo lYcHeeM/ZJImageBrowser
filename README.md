@@ -1,5 +1,5 @@
 # ZJPhotoBrowser
-An simple full screen photo browser based on UICollectionView written in Swift.
+An simple iOS photo browser based on UICollectionView written in Swift.
 
 ## Requirements
 

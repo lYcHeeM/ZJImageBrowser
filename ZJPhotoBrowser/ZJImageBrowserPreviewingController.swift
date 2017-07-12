@@ -1,6 +1,6 @@
 //
-//  ZJPhotoBrowserPreviewingController.swift
-//  ZJPhotoBrowser
+//  ZJImageBrowserPreviewingController.swift
+//  ZJImageBrowser
 //
 //  Created by luozhijun on 2017/7/11.
 //  Copyright © 2017年 RickLuo. All rights reserved.
@@ -10,14 +10,14 @@ import UIKit
 import SDWebImage
 import Photos
 
-class ZJPhotoBrowserPreviewingController: UIViewController {
+class ZJImageBrowserPreviewingController: UIViewController {
 
     var imageView = UIImageView()
-    var photoWrapper: ZJPhotoWrapper!
+    var imageWrapper: ZJImageWrapper!
     
-    required init(photoWrapper: ZJPhotoWrapper) {
+    required init(imageWrapper: ZJImageWrapper) {
         super.init(nibName: nil, bundle: nil)
-        self.photoWrapper = photoWrapper
+        self.imageWrapper = imageWrapper
     }
     
     func supposedContentSize(with image: UIImage?) -> CGSize {
@@ -52,13 +52,13 @@ class ZJPhotoBrowserPreviewingController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(imageView)
-        image = photoWrapper.placeholderImage
+        image = imageWrapper.placeholderImage
         
-        guard let url = URL(string: photoWrapper.highQualityImageUrl) else { return }
+        guard let url = URL(string: imageWrapper.highQualityImageUrl) else { return }
         
         let progressViewSize: CGFloat = 55
         let progressViewFrame = CGRect(x: (imageView.frame.width - progressViewSize)/2, y: (imageView.frame.height - progressViewSize)/2, width: progressViewSize, height: progressViewSize)
-        let progressView = ZJProgressView(frame: progressViewFrame, style: photoWrapper.progressStyle)
+        let progressView = ZJProgressView(frame: progressViewFrame, style: imageWrapper.progressStyle)
         imageView.addSubview(progressView)
         
         weak var weakProgressView = progressView
@@ -84,7 +84,7 @@ class ZJPhotoBrowserPreviewingController: UIViewController {
         let action2 = UIPreviewAction(title: "Save to album", style: .default) { (action, controller) in
             let status = PHPhotoLibrary.authorizationStatus()
             if status == .restricted || status == .denied {
-                ZJPhotoBrowserHUD.show(message: ZJPhotoBrowser.albumAuthorizingFailedHint, inView: self.view, needsIndicator: false, hideAfter: 2.5)
+                ZJImageBrowserHUD.show(message: ZJImageBrowser.albumAuthorizingFailedHint, inView: self.view, needsIndicator: false, hideAfter: 2.5)
                 return
             }
             guard let image = self.image else { return }
@@ -96,10 +96,10 @@ class ZJPhotoBrowserPreviewingController: UIViewController {
     @objc private func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: Any?) {
         var alertMessage = ""
         if error == nil {
-            alertMessage = ZJPhotoBrowser.imageSavingSucceedHint
+            alertMessage = ZJImageBrowser.imageSavingSucceedHint
         } else {
-            alertMessage = ZJPhotoBrowser.imageSavingFailedHint
+            alertMessage = ZJImageBrowser.imageSavingFailedHint
         }
-        ZJPhotoBrowserHUD.show(message: alertMessage, inView: nil, needsIndicator: false)
+        ZJImageBrowserHUD.show(message: alertMessage, inView: nil, needsIndicator: false)
     }
 }

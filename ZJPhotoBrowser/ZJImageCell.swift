@@ -1,5 +1,5 @@
 //
-//  ZJPhotoCell.swift
+//  ZJImageCell.swift
 //  ProgressView
 //
 //  Created by luozhijun on 2017/7/5.
@@ -9,18 +9,18 @@
 import UIKit
 import SDWebImage
 
-class ZJPhotoCell: UICollectionViewCell {
+class ZJImageCell: UICollectionViewCell {
     
-    static let reuseIdentifier = "ZJPhotoCell"
+    static let reuseIdentifier = "ZJImageCell"
     let maximumZoomScale: CGFloat = 2.5
     
     fileprivate var scrollView  : UIScrollView = UIScrollView()
     fileprivate var imageView   : UIImageView  = UIImageView()
     fileprivate var progressView: ZJProgressView!
     fileprivate var retryButton : UIButton!
-    fileprivate var photoWrapper: ZJPhotoWrapper?
+    fileprivate var imageWrapper: ZJImageWrapper?
     #if DEBUG
-    fileprivate var hud: ZJPhotoBrowserHUD?
+    fileprivate var hud: ZJImageBrowserHUD?
     #endif
     
     /// urlMap, 用于和图片url字符串的hashValue做对比, 目的是防止下载图片过程中滑动到其他页面(cell)时, 下载进度回调被交叉执行。
@@ -58,13 +58,13 @@ class ZJPhotoCell: UICollectionViewCell {
 }
 
 //MARK: - Setup UI
-extension ZJPhotoCell {
+extension ZJImageCell {
     override func layoutSubviews() {
         super.layoutSubviews()
-        scrollView.frame = CGRect(x: 0, y: 0, width: frame.width - ZJPhotoBrowser.pageSpacing, height: frame.height)
+        scrollView.frame = CGRect(x: 0, y: 0, width: frame.width - ZJImageBrowser.pageSpacing, height: frame.height)
         if let retryButton = retryButton {
-            retryButton.frame.origin = CGPoint(x: ZJPhotoBrowser.buttonHorizontalPadding, y: frame.size.height - ZJPhotoBrowser.buttonVerticalPadding - ZJPhotoBrowser.buttonHeight)
-            retryButton.frame.size.height = ZJPhotoBrowser.buttonHeight
+            retryButton.frame.origin = CGPoint(x: ZJImageBrowser.buttonHorizontalPadding, y: frame.size.height - ZJImageBrowser.buttonVerticalPadding - ZJImageBrowser.buttonHeight)
+            retryButton.frame.size.height = ZJImageBrowser.buttonHeight
         }
         adjustSubviewFrames()
     }
@@ -102,7 +102,7 @@ extension ZJPhotoCell {
         retryButton.sizeToFit()
         retryButton.addTarget(self, action: #selector(retryButtonClicked), for: .touchUpInside)
         contentView.addSubview(retryButton)
-        retryButton.frame.origin = CGPoint(x: ZJPhotoBrowser.buttonHorizontalPadding, y: frame.size.height - ZJPhotoBrowser.buttonVerticalPadding - ZJPhotoBrowser.buttonHeight)
+        retryButton.frame.origin = CGPoint(x: ZJImageBrowser.buttonHorizontalPadding, y: frame.size.height - ZJImageBrowser.buttonVerticalPadding - ZJImageBrowser.buttonHeight)
     }
     
     fileprivate func adjustSubviewFrames() {
@@ -157,7 +157,7 @@ extension ZJPhotoCell {
     }
 }
 
-extension ZJPhotoCell {
+extension ZJImageCell {
     
     override func prepareForReuse() {
         #if DEBUG
@@ -169,28 +169,28 @@ extension ZJPhotoCell {
         super.prepareForReuse()
     }
     
-    func setImage(with photoWrapper: ZJPhotoWrapper) {
-        self.photoWrapper = photoWrapper
-        guard let usingUrl = URL(string: photoWrapper.highQualityImageUrl) else { return }
+    func setImage(with imageWrapper: ZJImageWrapper) {
+        self.imageWrapper = imageWrapper
+        guard let usingUrl = URL(string: imageWrapper.highQualityImageUrl) else { return }
         
-        var placeholderImage = photoWrapper.placeholderImage
+        var placeholderImage = imageWrapper.placeholderImage
         if placeholderImage == nil {
             placeholderImage = UIImage(named: "placeholder")
         }
         retryButton?.isHidden = true
         progressView?.removeFromSuperview()
-        urlMap = photoWrapper.highQualityImageUrl.hashValue
+        urlMap = imageWrapper.highQualityImageUrl.hashValue
         image  = placeholderImage
         
-        guard photoWrapper.shouldDownloadImage else {
-            SDImageCache.shared().queryDiskCache(forKey: photoWrapper.highQualityImageUrl, done: { (image, cacheType) in
+        guard imageWrapper.shouldDownloadImage else {
+            SDImageCache.shared().queryDiskCache(forKey: imageWrapper.highQualityImageUrl, done: { (image, cacheType) in
                 guard let cachedImage = image else {
                     #if DEBUG
-                        self.hud = ZJPhotoBrowserHUD.show(message: "Won't download the large image, cause 'shouldDownloadImage' is false.", inView: self.scrollView, animated: true, needsIndicator: false, hideAfter: 3)
+                        self.hud = ZJImageBrowserHUD.show(message: "Won't download the large image, cause 'shouldDownloadImage' is false.", inView: self.scrollView, animated: true, needsIndicator: false, hideAfter: 3)
                     #endif
                     return
                 }
-                guard self.urlMap == photoWrapper.highQualityImageUrl.hashValue else { return}
+                guard self.urlMap == imageWrapper.highQualityImageUrl.hashValue else { return}
                 DispatchQueue.main.async(execute: {
                     self.image = cachedImage
                 })
@@ -202,7 +202,7 @@ extension ZJPhotoCell {
         
         let progressViewSize: CGFloat = 50
         let progressViewFrame = CGRect(x: (frame.width - progressViewSize)/2, y: (frame.height - progressViewSize)/2, width: progressViewSize, height: progressViewSize)
-        progressView = ZJProgressView(frame: progressViewFrame, style: photoWrapper.progressStyle)
+        progressView = ZJProgressView(frame: progressViewFrame, style: imageWrapper.progressStyle)
         contentView.addSubview(progressView)
         
         // 注意到imageView.sd_setImage方法会在开头cancel掉当前imageView关联的上一次下载,
@@ -217,11 +217,11 @@ extension ZJPhotoCell {
             // Check 'urlMap' to avoid 'progress' call back excuting crossly when scrolling pages.
             // Because of reusing mechanism, onece 'imageView' is reused, the 'progress' call back of previous image downing and the 'progress' call back of the current image downing will execute in the same cell crossly (or concurrently).
             // The same checking will be done in the 'completeion' call back.
-            guard self != nil, self!.urlMap == photoWrapper.highQualityImageUrl.hashValue else { return }
+            guard self != nil, self!.urlMap == imageWrapper.highQualityImageUrl.hashValue else { return }
             let progress = CGFloat(receivedSize)/CGFloat(expectedSize)
             self?.progressView?.progress = progress
         }) { [weak self] (image, error, cacheType, finished, imageUrl) in
-            guard self != nil, self!.urlMap == photoWrapper.highQualityImageUrl.hashValue, finished else { return }
+            guard self != nil, self!.urlMap == imageWrapper.highQualityImageUrl.hashValue, finished else { return }
             DispatchQueue.main.async(execute: {
                 if let usingImage = image {
                     self?.image = usingImage
@@ -238,7 +238,7 @@ extension ZJPhotoCell {
 }
 
 //MARK: - UIScrollViewDelegate
-extension ZJPhotoCell: UIScrollViewDelegate {
+extension ZJImageCell: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
@@ -251,7 +251,7 @@ extension ZJPhotoCell: UIScrollViewDelegate {
 }
 
 //MARK: - handle events
-extension ZJPhotoCell {
+extension ZJImageCell {
     @objc fileprivate func handleSingleTap(recognizer: UITapGestureRecognizer) {
         if scrollView.zoomScale > scrollView.minimumZoomScale {
             scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
@@ -278,8 +278,8 @@ extension ZJPhotoCell {
     
     @objc fileprivate func retryButtonClicked() {
         retryButton.isHidden = true
-        if let photoWrapper = photoWrapper {
-            setImage(with: photoWrapper)
+        if let imageWrapper = imageWrapper {
+            setImage(with: imageWrapper)
         }
     }
 }

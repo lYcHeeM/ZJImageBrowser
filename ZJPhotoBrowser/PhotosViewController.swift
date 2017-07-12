@@ -106,7 +106,7 @@ extension PhotosViewController {
                 return url.replacingOccurrences(of: "thumbnail", with: "large")
             })
             
-            var photoWrappers = [ZJPhotoWrapper]()
+            var imageWrappers = [ZJImageWrapper]()
             var i = 0
             for urlString in highQualityImageUrlStrings.sub(of: 0..<subArrayCount) {
                 //FIXME: just for test
@@ -118,12 +118,12 @@ extension PhotosViewController {
                 }
                 //End
                 
-                let wrapper = ZJPhotoWrapper(highQualityImageUrl: urlString, shouldDownloadImage: shouldDownloadImage, placeholderImage: cell.imageButtons[i].image(for: .normal), imageContainer: cell.imageButtons[i])
-                photoWrappers.append(wrapper)
+                let wrapper = ZJImageWrapper(highQualityImageUrl: urlString, shouldDownloadImage: shouldDownloadImage, placeholderImage: cell.imageButtons[i].image(for: .normal), imageContainer: cell.imageButtons[i])
+                imageWrappers.append(wrapper)
                 i += 1
             }
             
-            let browser = ZJPhotoBrowser(photoWrappers: photoWrappers, initialIndex: index)
+            let browser = ZJImageBrowser(imageWrappers: imageWrappers, initialIndex: index)
             browser.show()
         }
         
@@ -150,8 +150,8 @@ extension PhotosViewController: UIViewControllerPreviewingDelegate {
         let index                  = imageButton.tag
         let highQualityImageUrl    = cell.thumbnailUrls[index].replacingOccurrences(of: "thumbnail", with: "large")
         let placeholderImage       = imageButton.image(for: .normal)
-        let wrapper = ZJPhotoWrapper(highQualityImageUrl: highQualityImageUrl, shouldDownloadImage: true, placeholderImage: placeholderImage, imageContainer: nil)
-        let target = ZJPhotoBrowserPreviewingController(photoWrapper: wrapper)
+        let wrapper = ZJImageWrapper(highQualityImageUrl: highQualityImageUrl, shouldDownloadImage: true, placeholderImage: placeholderImage, imageContainer: nil)
+        let target = ZJImageBrowserPreviewingController(imageWrapper: wrapper)
         target.preferredContentSize = target.supposedContentSize(with: placeholderImage)
         return target
     }
@@ -162,7 +162,7 @@ extension PhotosViewController: UIViewControllerPreviewingDelegate {
             let cell        = tableView.cellForRow(at: indexPath) as? PhotosCell,
             let imageButton = previewingContext.sourceView as? ImageButton
         else { return }
-        var photoWrappers = [ZJPhotoWrapper]()
+        var imageWrappers = [ZJImageWrapper]()
         let highQualityImageUrlStrings = cell.thumbnailUrls.map({ (url) -> String in
             return url.replacingOccurrences(of: "thumbnail", with: "large")
         })
@@ -170,11 +170,11 @@ extension PhotosViewController: UIViewControllerPreviewingDelegate {
         for urlString in highQualityImageUrlStrings {
             let imageContainer   = cell.imageButtons[index]
             let placeholderImage = imageContainer.image(for: .normal)
-            let wrapper = ZJPhotoWrapper(highQualityImageUrl: urlString, shouldDownloadImage: true, placeholderImage: placeholderImage, imageContainer: imageContainer)
-            photoWrappers.append(wrapper)
+            let wrapper = ZJImageWrapper(highQualityImageUrl: urlString, shouldDownloadImage: true, placeholderImage: placeholderImage, imageContainer: imageContainer)
+            imageWrappers.append(wrapper)
             index += 1
         }
-        let browser = ZJPhotoBrowser(photoWrappers: photoWrappers, initialIndex: imageButton.tag)
+        let browser = ZJImageBrowser(imageWrappers: imageWrappers, initialIndex: imageButton.tag)
         browser.show(animated: false, enlargingAnimated: false)
     }
 }
