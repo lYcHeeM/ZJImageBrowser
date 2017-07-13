@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "ZJImageBrowser"
-  s.version      = "0.0.1"
+  s.version      = "0.0.3"
   s.summary      = "An simple iOS photo browser based on UICollectionView written in Swift."
 
   s.homepage     = "https://github.com/lYcHeeM/ZJImageBrowser"
@@ -23,10 +23,12 @@ Pod::Spec.new do |s|
   # s.tvos.deployment_target = "9.0"
 
   s.source       = { :git => "https://github.com/lYcHeeM/ZJImageBrowser.git", :tag => "#{s.version}" }
-  s.source_files  = "ZJPhotoBrowser/ZJ*.swift"
+  s.source_files  = "ZJImageBrowser/ZJImageBrowser/*.swift"
   s.requires_arc = true
   s.frameworks = 'Photos'
-  # s.resources = "Assets/*.png"
+  s.resource_bundles = {
+    'ZJImageBrowser' => ['Assets/*.png']
+  }
 
   s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   s.dependency "SDWebImage", "~> 3.7.5"

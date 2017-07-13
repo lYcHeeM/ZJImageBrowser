@@ -10,12 +10,12 @@ import UIKit
 import SDWebImage
 import Photos
 
-class ZJImageBrowserPreviewingController: UIViewController {
+open class ZJImageBrowserPreviewingController: UIViewController {
 
-    var imageView = UIImageView()
-    var imageWrapper: ZJImageWrapper!
+    private var imageView = UIImageView()
+    open var imageWrapper: ZJImageWrapper!
     
-    required init(imageWrapper: ZJImageWrapper) {
+    required public init(imageWrapper: ZJImageWrapper) {
         super.init(nibName: nil, bundle: nil)
         self.imageWrapper = imageWrapper
     }
@@ -28,7 +28,7 @@ class ZJImageBrowserPreviewingController: UIViewController {
         return result
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -49,7 +49,7 @@ class ZJImageBrowserPreviewingController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(imageView)
         image = imageWrapper.placeholderImage
@@ -77,7 +77,7 @@ class ZJImageBrowserPreviewingController: UIViewController {
     }
     
     @available(iOS 9.0, *)
-    override var previewActionItems: [UIPreviewActionItem] {
+    override open var previewActionItems: [UIPreviewActionItem] {
         let action1 = UIPreviewAction(title: "Copy to pastboard", style: .default) { (action, controller) in
             UIPasteboard.general.image = self.image
         }

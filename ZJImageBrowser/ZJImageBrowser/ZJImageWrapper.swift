@@ -8,22 +8,23 @@
 
 import UIKit
 
-class ZJImageWrapper: NSObject {
-    var highQualityImageUrl: String = ""
-    var shouldDownloadImage: Bool = true
-    var progressStyle      : ZJProgressViewStyle = .pie
-    var placeholderImage   : UIImage?
+open class ZJImageWrapper: NSObject {
+    open var highQualityImageUrl: String = ""
+    open var shouldDownloadImage: Bool = true
+    open var progressStyle      : ZJProgressViewStyle = .pie
+    open var placeholderImage   : UIImage?
     /// using for enlarging\shrinking animation
-    weak var imageContainer: UIView?
+    weak open var imageContainer: UIView?
     
-    override init() {
+    public override init() {
         super.init()
     }
     
-    init(highQualityImageUrl: String?, shouldDownloadImage: Bool, placeholderImage: UIImage?, imageContainer: UIView?) {
+    public required init(highQualityImageUrl: String?, shouldDownloadImage: Bool, placeholderImage: UIImage?, imageContainer: UIView?) {
         self.highQualityImageUrl = highQualityImageUrl ?? ""
         self.shouldDownloadImage = shouldDownloadImage
         self.placeholderImage    = placeholderImage
         self.imageContainer      = imageContainer
     }
 }
+

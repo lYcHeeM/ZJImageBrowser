@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum ZJProgressViewStyle: Int {
+public enum ZJProgressViewStyle: Int {
     /// 饼状
     case pie
     /// 环形
@@ -17,7 +17,7 @@ enum ZJProgressViewStyle: Int {
     case bar
 }
 
-class ZJProgressView: UIView {
+open class ZJProgressView: UIView {
     
     fileprivate var style: ZJProgressViewStyle = .pie
     fileprivate var outLineLayer : CAShapeLayer = CAShapeLayer()
@@ -25,7 +25,7 @@ class ZJProgressView: UIView {
     fileprivate var progressBar  : UIView!
     
     fileprivate var previousProgress: CGFloat = 0
-    var progress: CGFloat = 0 {
+    open var progress: CGFloat = 0 {
         didSet {
             var usingProgress = progress
             if usingProgress < 0 {
@@ -37,10 +37,10 @@ class ZJProgressView: UIView {
             drawShape(withProgress: usingProgress, animated: animated)
         }
     }
-    var animated: Bool = false
-    var animationDuration: TimeInterval = 0.25
+    open var animated         : Bool         = false
+    open var animationDuration: TimeInterval = 0.25
     
-    init(frame: CGRect, style: ZJProgressViewStyle = .pie, initialProgress: CGFloat = 0, outlineWidth: CGFloat = 1, animated: Bool = false, animationDuration: TimeInterval = 0.25) {
+    public required init(frame: CGRect, style: ZJProgressViewStyle = .pie, initialProgress: CGFloat = 0, outlineWidth: CGFloat = 1, animated: Bool = false, animationDuration: TimeInterval = 0.25) {
         self.style               = style
         self.progress            = initialProgress
         self.animated            = animated
@@ -81,7 +81,7 @@ class ZJProgressView: UIView {
         NotificationCenter.default.removeObserver(self)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 }
@@ -89,7 +89,7 @@ class ZJProgressView: UIView {
 //MARK: - SetupUI
 extension ZJProgressView {
     
-    override var frame: CGRect {
+    open override var frame: CGRect {
         didSet {
             let outlineRect = CGRect(x: outLineLayer.lineWidth/2, y: outLineLayer.lineWidth/2, width: frame.width - outLineLayer.lineWidth, height: frame.height - outLineLayer.lineWidth)
             let outline = UIBezierPath(roundedRect: outlineRect, cornerRadius: bounds.height/2)
@@ -171,7 +171,7 @@ extension ZJProgressView {
             let startX: CGFloat = outLineLayer.lineWidth + spacing
             let width : CGFloat = frame.width - 2 * startX
             if animated {
-                UIView.animate(withDuration: animationDuration, animations: { 
+                UIView.animate(withDuration: animationDuration, animations: {
                     self.progressBar.frame.size.width = progress * width
                 }, completion: { (_) in
                     if self.progress >= 1 {

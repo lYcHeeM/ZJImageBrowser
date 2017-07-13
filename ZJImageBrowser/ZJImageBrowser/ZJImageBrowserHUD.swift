@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ZJImageBrowserHUD: UIToolbar {
+open class ZJImageBrowserHUD: UIToolbar {
 
     fileprivate var label = UILabel()
     fileprivate var indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
-    required init(message: String?) {
+    required public init(message: String?) {
         super.init(frame: .zero)
         layer.cornerRadius = 5
         clipsToBounds = true
@@ -27,11 +27,11 @@ class ZJImageBrowserHUD: UIToolbar {
         addSubview(indicator)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
+    override open func layoutSubviews() {
         super.layoutSubviews()
         let horizontalMargin: CGFloat    = 30
         let padding         : CGFloat    = 10
@@ -44,7 +44,7 @@ class ZJImageBrowserHUD: UIToolbar {
     }
     
     @discardableResult
-    class func show(message: String?, inView view: UIView? = nil, animated: Bool = true, needsIndicator: Bool = true, hideAfter interval: TimeInterval? = 1.2) -> ZJImageBrowserHUD? {
+    open class func show(message: String?, inView view: UIView? = nil, animated: Bool = true, needsIndicator: Bool = true, hideAfter interval: TimeInterval? = 1.2) -> ZJImageBrowserHUD? {
         var superView: UIView!
         if view != nil {
             superView = view
@@ -87,7 +87,7 @@ class ZJImageBrowserHUD: UIToolbar {
         return hud
     }
     
-    func hide(animated: Bool = true) {
+    open func hide(animated: Bool = true) {
         indicator.stopAnimating()
         UIView.animate(withDuration: 0.25, animations: { 
             self.alpha = 0
