@@ -41,6 +41,8 @@ let browser = ZJImageBrowser(imageWrappers: imageWrappers, initialIndex: yourSpe
 browser.show()
 ```
 
+### Run the demo project to see other usage, such as 3D Touch support.
+
 ## Integration
 
 #### CocoaPods (iOS 8+, OS X 10.9+)
@@ -52,7 +54,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'YourAppTargetName' do
-	pod 'ZJImageBrowser', '0.0.3'
+	pod 'ZJImageBrowser', '0.0.4'
 end
 ```
 
@@ -60,9 +62,9 @@ Requires CocoaPods version 1.0.0+
 
 ## TODO
 
-* Support landscape;
-* Complement demo project;
-* 
+* Support landscape orientation;
+* Complement demo project, providing more detail examples;
+* Pre-download images for indexes other than the initial one.
 
 
 ## License

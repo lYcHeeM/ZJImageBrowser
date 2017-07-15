@@ -246,6 +246,8 @@ extension ZJImageBrowser {
                     } else {
                         // 注意, 发现, 不写下面两句, 动画时shrinkingView内部控件的frame将不会是预期的效果
                         // Practice shows, if the following two expression were not called, frames of shrinkingView's subviews would't preform expectantly when animating.
+                        _superview.addSubview(_shrinkingView)
+                        _shrinkingView.frame = photoCell.imageContainer.frame
                         _shrinkingView.setNeedsLayout()
                         _shrinkingView.layoutIfNeeded()
 

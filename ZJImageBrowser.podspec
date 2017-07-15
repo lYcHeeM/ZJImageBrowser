@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "ZJImageBrowser"
-  s.version      = "0.0.3"
+  s.version      = “0.0.4”
   s.summary      = "An simple iOS photo browser based on UICollectionView written in Swift."
 
   s.homepage     = "https://github.com/lYcHeeM/ZJImageBrowser"

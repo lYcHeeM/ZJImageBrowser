@@ -50,7 +50,10 @@ class SimpleUsageController: UIViewController {
         }
         browser.show(inView: navigationController?.view, animated: true, enlargingAnimated: enlargingShrinkingAnimation, at: imageView.tag)
     }
-    
+}
+
+//MARK: - Handle Events
+extension SimpleUsageController {
     @IBAction func enlargingShrinkingAnimationSwitchValueChanged(_ sender: UISwitch) {
         enlargingShrinkingAnimation = sender.isOn
         browser.shrinkingAnimated   = sender.isOn
@@ -71,5 +74,5 @@ class SimpleUsageController: UIViewController {
     @IBAction func usesInternalHUDSwitchValueChanged(_ sender: UISwitch) {
         browser.usesInternalHUD = sender.isOn
     }
-    
 }
+
