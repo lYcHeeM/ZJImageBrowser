@@ -175,7 +175,10 @@ extension ZJImageCell {
         
         var placeholderImage = imageWrapper.placeholderImage
         if placeholderImage == nil {
-            placeholderImage = UIImage(named: "ZJImageBrowser.bundle/placeholder")
+            let bundle = Bundle(for: ZJImageCell.self)
+            if let path = bundle.path(forResource: "ZJImageBrowser.bundle/placeholder@2x", ofType: "png") {
+                placeholderImage = UIImage(contentsOfFile: path)
+            }
         }
         retryButton?.isHidden = true
         progressView?.removeFromSuperview()

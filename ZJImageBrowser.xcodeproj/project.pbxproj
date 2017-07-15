@@ -21,6 +21,7 @@
 		B266D7821F161BCA003840E7 /* ZJImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7751F161BCA003840E7 /* ZJImageCell.swift */; };
 		B266D7831F161BCA003840E7 /* ZJImageWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7761F161BCA003840E7 /* ZJImageWrapper.swift */; };
 		B266D7841F161BCA003840E7 /* ZJProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7771F161BCA003840E7 /* ZJProgressView.swift */; };
+		B2AA3FD31F18A87F0064056E /* SimpleUsageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA3FD21F18A87F0064056E /* SimpleUsageController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		B266D7751F161BCA003840E7 /* ZJImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageCell.swift; sourceTree = "<group>"; };
 		B266D7761F161BCA003840E7 /* ZJImageWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageWrapper.swift; sourceTree = "<group>"; };
 		B266D7771F161BCA003840E7 /* ZJProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJProgressView.swift; sourceTree = "<group>"; };
+		B2AA3FD21F18A87F0064056E /* SimpleUsageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleUsageController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,8 +105,9 @@
 				B204A47C1F170B3100F87A20 /* ZJImageBrowser.bundle */,
 				B266D7711F161BCA003840E7 /* ZJImageBrowser */,
 				B266D7681F161BCA003840E7 /* AppDelegate.swift */,
-				B266D76F1F161BCA003840E7 /* PhotosViewController.swift */,
 				B266D7701F161BCA003840E7 /* ViewController.swift */,
+				B2AA3FD21F18A87F0064056E /* SimpleUsageController.swift */,
+				B266D76F1F161BCA003840E7 /* PhotosViewController.swift */,
 				B266D76A1F161BCA003840E7 /* LaunchScreen.storyboard */,
 				B266D76C1F161BCA003840E7 /* Main.storyboard */,
 				B266D7691F161BCA003840E7 /* Assets.xcassets */,
@@ -252,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B266D7801F161BCA003840E7 /* ZJImageBrowserHUD.swift in Sources */,
+				B2AA3FD31F18A87F0064056E /* SimpleUsageController.swift in Sources */,
 				B266D77E1F161BCA003840E7 /* ViewController.swift in Sources */,
 				B266D7811F161BCA003840E7 /* ZJImageBrowserPreviewingController.swift in Sources */,
 				B266D7781F161BCA003840E7 /* AppDelegate.swift in Sources */,

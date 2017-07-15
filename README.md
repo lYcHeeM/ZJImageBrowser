@@ -52,11 +52,18 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'YourAppTargetName' do
-	pod 'ZJImageBrowser'
+	pod 'ZJImageBrowser', '0.0.3'
 end
 ```
 
 Requires CocoaPods version 1.0.0+
+
+## TODO
+
+* Support landscape;
+* Complement demo project;
+* 
+
 
 ## License
 
