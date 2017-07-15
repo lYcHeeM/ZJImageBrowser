@@ -1,11 +1,20 @@
 # ZJImageBrowser
 An simple iOS image browser based on UICollectionView written in Swift.
 
+[![Version](https://img.shields.io/badge/pod-v0.0.4-brightgreen.svg)](https://img.shields.io/badge/pod-v0.0.4-brightgreen.svg)
+
 ## Requirements
 
 - iOS 8.0+ / macOS 10.10+ 
 - Xcode 8.0+
 - Swift 3.0+ (You can also use it in Objective-C project.)
+
+## Screen shots
+![SwitchImageDemo](https://wx3.sinaimg.cn/large/71842c1aly1fhkqr7axc6g20dc0npx6q.gif)
+![ProgressDemo](https://wx4.sinaimg.cn/large/71842c1aly1fhkqr0ax2mg20dc0npb2c.gif)
+![3dtouchDemo_1](https://wx4.sinaimg.cn/large/71842c1aly1fhkqqlmdisg20dc0np7wi.gif)
+![3dtouchDemo_2](https://wx3.sinaimg.cn/large/71842c1aly1fhkqqgu4vbg20dc0npnpd.gif)
+![SavingFailedDemo](https://wx2.sinaimg.cn/large/71842c1aly1fhkqqrfh9fg20dc0npkjm.gif)
 
 ## Usage
 ### Simple 
