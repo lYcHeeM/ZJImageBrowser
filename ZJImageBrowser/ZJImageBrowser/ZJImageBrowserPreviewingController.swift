@@ -52,6 +52,7 @@ open class ZJImageBrowserPreviewingController: UIViewController {
     
     override open func viewDidLoad() {
         super.viewDidLoad()
+        view.clipsToBounds = false
         view.addSubview(imageView)
         if let image = imageWrapper.image {
             self.image = image

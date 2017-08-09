@@ -1,7 +1,7 @@
 # ZJImageBrowser
 An simple iOS image browser based on UICollectionView written in Swift.
 
-[![Version](https://img.shields.io/badge/pod-v0.0.4-brightgreen.svg)](https://img.shields.io/badge/pod-v0.0.4-brightgreen.svg)
+[![Version](https://img.shields.io/badge/pod-v0.0.5-brightgreen.svg)](https://img.shields.io/badge/pod-v0.0.4-brightgreen.svg)
 
 ## Requirements
 
@@ -79,7 +79,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'YourAppTargetName' do
-	pod 'ZJImageBrowser', '0.0.4'
+	pod 'ZJImageBrowser', '0.0.5'
 end
 ```
 
