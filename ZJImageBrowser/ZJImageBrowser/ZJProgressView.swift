@@ -20,9 +20,10 @@ public enum ZJProgressViewStyle: Int {
 open class ZJProgressView: UIView {
     
     fileprivate var style: ZJProgressViewStyle = .pie
-    fileprivate var outLineLayer : CAShapeLayer = CAShapeLayer()
-    fileprivate var progressLayer: CAShapeLayer = CAShapeLayer()
-    fileprivate var progressBar  : UIView!
+    fileprivate var backgroundLayer: CAShapeLayer = CAShapeLayer()
+    fileprivate var outLineLayer   : CAShapeLayer = CAShapeLayer()
+    fileprivate var progressLayer  : CAShapeLayer = CAShapeLayer()
+    fileprivate var progressBar    : UIView!
     
     fileprivate var previousProgress: CGFloat = 0
     open var progress: CGFloat = 0 {
@@ -42,13 +43,14 @@ open class ZJProgressView: UIView {
     open var isRemovedOnCompletion: Bool         = true
     
     public required init(frame: CGRect, style: ZJProgressViewStyle = .pie, initialProgress: CGFloat = 0, outlineWidth: CGFloat = 1, animated: Bool = false, animationDuration: TimeInterval = 0.25) {
-        self.style               = style
-        self.progress            = initialProgress
-        self.animated            = animated
-        self.animationDuration   = animationDuration
-        outLineLayer.lineWidth   = outlineWidth
-        outLineLayer.fillColor   = UIColor.clear.cgColor
-        outLineLayer.strokeColor = UIColor.white.cgColor
+        self.style                = style
+        self.progress             = initialProgress
+        self.animated             = animated
+        self.animationDuration    = animationDuration
+        backgroundLayer.fillColor = UIColor(white: 0, alpha: 0.15).cgColor
+        outLineLayer.lineWidth    = outlineWidth
+        outLineLayer.fillColor    = UIColor.clear.cgColor
+        outLineLayer.strokeColor  = UIColor.white.cgColor
         if style != .bar {
             progressLayer.strokeColor = UIColor.white.cgColor
             progressLayer.fillColor   = UIColor.clear.cgColor
@@ -68,6 +70,7 @@ open class ZJProgressView: UIView {
         
         super.init(frame: tempF)
         backgroundColor = UIColor.clear
+        layer.addSublayer(backgroundLayer)
         layer.addSublayer(outLineLayer)
         if style != .bar {
             layer.addSublayer(progressLayer)
@@ -92,6 +95,7 @@ extension ZJProgressView {
     
     open override var frame: CGRect {
         didSet {
+            backgroundLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: bounds.height/2).cgPath
             let outlineRect = CGRect(x: outLineLayer.lineWidth/2, y: outLineLayer.lineWidth/2, width: frame.width - outLineLayer.lineWidth, height: frame.height - outLineLayer.lineWidth)
             let outline = UIBezierPath(roundedRect: outlineRect, cornerRadius: bounds.height/2)
             outLineLayer.path = outline.cgPath

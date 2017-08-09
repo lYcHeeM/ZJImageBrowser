@@ -38,8 +38,8 @@ var thumbnialUrls: [String] = [
 class ViewController: UITableViewController {
     
     override func viewDidLoad() {
-        super.viewDidLoad()
         title = "main"
+        super.viewDidLoad()
     }
 }
 
