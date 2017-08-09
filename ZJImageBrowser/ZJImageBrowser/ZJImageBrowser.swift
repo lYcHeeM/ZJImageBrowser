@@ -68,7 +68,7 @@ open class ZJImageBrowser: UICollectionView {
     open var albumAuthorizingFailed: ((ZJImageBrowser, PHAuthorizationStatus) -> Swift.Void)?
     open var photoSavingFailed     : ((ZJImageBrowser, UIImage)               -> Swift.Void)?
     /// 注意: 此闭包将不在主线程执行
-    /// Note: this closure excutes in global queue.
+    /// Note: this closure excutes in the global queue.
     open var imageQueryingFinished : ((ZJImageBrowser, Bool, UIImage?)        -> Swift.Void)?
     
     required public init(imageWrappers: [ZJImageWrapper], initialIndex: Int = 0, containerRect: CGRect = UIScreen.main.bounds) {
@@ -157,28 +157,16 @@ extension ZJImageBrowser {
             return
         }
         
-        weak var enlargingViewSuperview  = enlargingView.superview
         let enlargingViewOriginalFrame   = enlargingView.frame
         let enlargingAnimationStartFrame = enlargingView.convert(enlargingView.bounds, to: _superview)
         
-        // 实践中发现一中特殊情况, 当enlargingView是用约束布局的, 不能直接用把enlargingView从父视图移除的方式实现放大动画, 因为其他一旦enlargingView被移除父视图, 其他同层级的子view如果有与它相关的约束, 比如宽高相等, 则这些子view的所有约束也会被移除.
-        // 故此处判断enlarginView的父视图是否含有约束, 如果有的话先隐藏enlargingView, 并用一个临时的imageView当作enlarginView的镜像.
-        // 隐藏时的缩小动画同理.
-        // Decide enlarging/shrinking animation by whether enlargingView is NSConstraint based or not.
-        // Shrinking animation will be done in the same way.
-        var tempImageView: UIImageView!
-        if enlargingView.superview?.constraints.isEmpty == false {
-            tempImageView               = UIImageView()
-            tempImageView.frame         = enlargingAnimationStartFrame
-            tempImageView.image         = currentImageWrapper.placeholderImage
-            tempImageView.contentMode   = .scaleAspectFill
-            tempImageView.clipsToBounds = true
-            enlargingView.isHidden      = true
-            _superview.addSubview(tempImageView!)
-        } else {
-            _superview.addSubview(enlargingView)
-            enlargingView.frame         = enlargingAnimationStartFrame
-        }
+        let tempImageView           = UIImageView()
+        tempImageView.frame         = enlargingAnimationStartFrame
+        tempImageView.image         = currentImageWrapper.placeholderImage
+        tempImageView.contentMode   = .scaleAspectFill
+        tempImageView.clipsToBounds = true
+        enlargingView.isHidden      = true
+        _superview.addSubview(tempImageView)
         
         // 使enlargingViewEndFrame的宽度和屏慕宽度保持一致, 宽高比和图片的宽高比一致
         // Make enlargingViewEndFrame's width equals to screen width, and its aspect ratio the same as its inner image;
@@ -186,10 +174,10 @@ extension ZJImageBrowser {
         enlargingAnimationEndFrame.size.width  = _superview.frame.width
         enlargingAnimationEndFrame.size.height = _superview.frame.width * (enlargingImage.size.height/enlargingImage.size.width)
         enlargingAnimationEndFrame.origin      = CGPoint(x: 0, y: (_superview.frame.height - enlargingAnimationEndFrame.height)/2)
-        animate(withMirroredImageView: tempImageView, enlargingView: enlargingView, itsSuperview: enlargingViewSuperview, originalFrame: enlargingViewOriginalFrame, animationEndFrame: enlargingAnimationEndFrame, animated: true)
+        animate(withMirroredImageView: tempImageView, enlargingView: enlargingView, originalFrame: enlargingViewOriginalFrame, animationEndFrame: enlargingAnimationEndFrame, animated: true)
     }
     
-    fileprivate func animate(withMirroredImageView mirroredImageView: UIImageView? = nil, enlargingView: UIView? = nil, itsSuperview: UIView? = nil, originalFrame: CGRect = .zero, animationEndFrame: CGRect = .zero, animated: Bool) {
+    fileprivate func animate(withMirroredImageView mirroredImageView: UIImageView? = nil, enlargingView: UIView? = nil, originalFrame: CGRect = .zero, animationEndFrame: CGRect = .zero, animated: Bool) {
         if animated {
             if enlargingView != nil { isHidden = true }
             alpha                = 0
@@ -205,16 +193,13 @@ extension ZJImageBrowser {
                     enlargingView.frame     = animationEndFrame
                 }
             }, completion: { (_) in
-                mirroredImageView?.removeFromSuperview()
+                self.isHidden = false
                 enlargingView?.isHidden = false
-                if let enlargingView = enlargingView {
-                    itsSuperview?.addSubview(enlargingView)
-                    enlargingView.frame = originalFrame
-                    self.isHidden = false
-                }
+                mirroredImageView?.removeFromSuperview()
                 self.isShowing = true
             })
         } else {
+            enlargingView?.isHidden = false
             isShowing = true
         }
     }
@@ -222,36 +207,23 @@ extension ZJImageBrowser {
     open func dismiss(animated: Bool = true, shrinkingAnimated: Bool = true , force: Bool = false, completion: (() -> Swift.Void)? = nil) {
         if !isShowing && !force { return }
         if animated {
-            weak var shrinkingViewSuperview: UIView?
             var shrinkingView              : UIView?
             var mirroredImageView          : UIImageView!
-            var originalFrame              = CGRect.zero
             var shrinkingAnimationEndFrame = CGRect.zero
             if shrinkingAnimated, let _shrinkingView = imageWrappers[innerInitialIndex].imageContainer, let _superview = superview, let photoCell = visibleCells.first as? ZJImageCell {
                 let rect = _shrinkingView.convert(_shrinkingView.bounds, to: _superview)
                 if _superview.bounds.intersects(rect) {
-                    originalFrame              = _shrinkingView.frame
                     shrinkingAnimationEndFrame = rect
                     shrinkingView              = _shrinkingView
-                    shrinkingViewSuperview     = _shrinkingView.superview
+                    shrinkingView?.isHidden    = true
 
-                    if shrinkingViewSuperview?.constraints.isEmpty == false {
-                        _shrinkingView.isHidden = true
-                        mirroredImageView       = UIImageView()
-                        _superview.addSubview(mirroredImageView)
-                        mirroredImageView.frame         = photoCell.imageContainer.frame
-                        mirroredImageView.image         = imageWrappers[innerInitialIndex].placeholderImage
-                        mirroredImageView.contentMode   = .scaleAspectFill
-                        mirroredImageView.clipsToBounds = true
-                    } else {
-                        // 注意, 发现, 不写下面两句, 动画时shrinkingView内部控件的frame将不会是预期的效果
-                        // Practice shows, if the following two expression were not called, frames of shrinkingView's subviews would't preform expectantly when animating.
-                        _superview.addSubview(_shrinkingView)
-                        _shrinkingView.frame = photoCell.imageContainer.frame
-                        _shrinkingView.setNeedsLayout()
-                        _shrinkingView.layoutIfNeeded()
-
-                    }
+                    mirroredImageView = UIImageView()
+                    _superview.addSubview(mirroredImageView)
+                    mirroredImageView.frame         = photoCell.imageContainer.frame
+                    mirroredImageView.image         = imageWrappers[innerInitialIndex].placeholderImage
+                    mirroredImageView.contentMode   = .scaleAspectFill
+                    mirroredImageView.clipsToBounds = true
+                    
                     removeFromSuperview()
                     saveButton.isHidden = true
                 }
@@ -261,7 +233,6 @@ extension ZJImageBrowser {
                 self.alpha                = 0
                 self.saveButton.alpha     = 0
                 self.pageIndexLabel.alpha = 0
-                shrinkingView?.frame      = shrinkingAnimationEndFrame
                 mirroredImageView?.frame  = shrinkingAnimationEndFrame
             }, completion: { (_) in
                 self.pageIndexLabel.removeFromSuperview()
@@ -270,13 +241,9 @@ extension ZJImageBrowser {
                 self.alpha                = 1
                 self.saveButton.alpha     = 1
                 self.pageIndexLabel.alpha = 1
-                self.isShowing = false
+                self.isShowing            = false
+                shrinkingView?.isHidden   = false
                 mirroredImageView?.removeFromSuperview()
-                shrinkingView?.isHidden = false
-                if let shrinkingView = shrinkingView {
-                    shrinkingView.frame = originalFrame
-                    shrinkingViewSuperview?.addSubview(shrinkingView)
-                }
                 completion?()
             })
         } else {

@@ -171,6 +171,10 @@ extension ZJImageCell {
     
     func setImage(with imageWrapper: ZJImageWrapper) {
         self.imageWrapper = imageWrapper
+        if let image = imageWrapper.image {
+            self.image = image
+            return
+        }
         guard let usingUrl = URL(string: imageWrapper.highQualityImageUrl) else { return }
         
         var placeholderImage = imageWrapper.placeholderImage

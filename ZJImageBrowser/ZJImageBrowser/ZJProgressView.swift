@@ -28,7 +28,7 @@ open class ZJProgressView: UIView {
     open var progress: CGFloat = 0 {
         didSet {
             var usingProgress = progress
-            if usingProgress < 0 {
+            if usingProgress < 0 || usingProgress == -0 {
                 usingProgress = 0
             } else if usingProgress > 1 {
                 usingProgress = 1
@@ -37,8 +37,9 @@ open class ZJProgressView: UIView {
             drawShape(withProgress: usingProgress, animated: animated)
         }
     }
-    open var animated         : Bool         = false
-    open var animationDuration: TimeInterval = 0.25
+    open var animated             : Bool         = false
+    open var animationDuration    : TimeInterval = 0.25
+    open var isRemovedOnCompletion: Bool         = true
     
     public required init(frame: CGRect, style: ZJProgressViewStyle = .pie, initialProgress: CGFloat = 0, outlineWidth: CGFloat = 1, animated: Bool = false, animationDuration: TimeInterval = 0.25) {
         self.style               = style
@@ -125,12 +126,13 @@ extension ZJProgressView {
             // 为了无缝连接上一次画出的图形, 此处不从上次结束的位置开始画, 而是回退5度后再画, 重叠5度无视觉影响
             // Practice shows that, if we start drawing a layer segment (which will display current progress) from previous angle, then a tinny gap between current layer segment and the previous one appears.
             // So I turn back 5 degrees current layer segment begins to draw to achieve a much better appearance.
-            if previousProgress > 0 && previousProgress < 1 {
+            // 注意当previousProgress <= 5/360时, 如果也回退5度, 会造成起始角度小于-2/π的现象.
+            if previousProgress > 5/360 && previousProgress < 1 {
                 startAngle -= CGFloat.pi * 2 / 360 * 5
             }
-            let endAngle    : CGFloat = -CGFloat.pi/2 + CGFloat.pi * 2 * progress
-            var lineWidth   : CGFloat!
-            var lineCap: String = "butt"
+            let endAngle : CGFloat = -CGFloat.pi/2 + CGFloat.pi * 2 * progress
+            var lineWidth: CGFloat!
+            var lineCap  : String = "butt"
             
             if style == .pie {
                 // 注意lineWidth属性, 它有一半的宽度是超出path所包住的范围
@@ -163,7 +165,7 @@ extension ZJProgressView {
                 animation.isRemovedOnCompletion = false
                 segmentLayer.add(animation, forKey: "animation")
             } else {
-                if progress >= 1 {
+                if progress >= 1 && isRemovedOnCompletion {
                     removeFromSuperview()
                 }
             }
@@ -174,13 +176,13 @@ extension ZJProgressView {
                 UIView.animate(withDuration: animationDuration, animations: {
                     self.progressBar.frame.size.width = progress * width
                 }, completion: { (_) in
-                    if self.progress >= 1 {
+                    if self.progress >= 1 && self.isRemovedOnCompletion {
                         self.removeFromSuperview()
                     }
                 })
             } else {
                 progressBar.frame.size.width = progress * width
-                if progress >= 1 {
+                if progress >= 1 && isRemovedOnCompletion {
                     removeFromSuperview()
                 }
             }
@@ -194,7 +196,7 @@ extension ZJProgressView {
     }
     
     @objc fileprivate func animationDidStop() {
-        if progress >= 1 {
+        if progress >= 1 && isRemovedOnCompletion {
             removeFromSuperview()
         }
     }

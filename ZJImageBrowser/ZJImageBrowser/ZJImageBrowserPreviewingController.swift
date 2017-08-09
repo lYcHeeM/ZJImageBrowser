@@ -20,10 +20,17 @@ open class ZJImageBrowserPreviewingController: UIViewController {
         self.imageWrapper = imageWrapper
     }
     
-    func supposedContentSize(with image: UIImage?) -> CGSize {
-        guard let image = image else { return UIScreen.main.bounds.size }
-        var result = CGSize.zero
-        result.width  = view.frame.width
+    open func supposedContentSize(with image: UIImage? = nil) -> CGSize {
+        var usingImage = image
+        if usingImage == nil {
+            usingImage = SDImageCache.shared().imageFromDiskCache(forKey: imageWrapper.highQualityImageUrl)
+        }
+        guard let image = usingImage else { return UIScreen.main.bounds.size }
+        var result    = CGSize.zero
+        result.width  = UIScreen.main.bounds.size.width
+        // 本以为要限制高度最大为屏幕高度, 同时按比例缩小width, 但实践发现这么做,
+        // 在高度超过屏幕的长图上, 会使得peek操作触发后, 图片无法充满预览区域.
+        // 但现在的做法也有一个缺陷, 长图无法完整显示, 超出屏幕高度的部分有可能看不到.
         result.height = result.width * (image.size.height/image.size.width)
         return result
     }
@@ -34,24 +41,22 @@ open class ZJImageBrowserPreviewingController: UIViewController {
     
     fileprivate var image: UIImage? {
         didSet {
-            imageView.image = image
-            var imageViewOrigin = CGPoint.zero
-            var imageViewSize = view.frame.size
-            if let image = imageView.image {
-                imageViewSize.width = view.frame.width
-                imageViewSize.height = view.frame.width * (image.size.height/image.size.width)
-            }
-            if imageViewSize.height <= view.frame.height {
-                imageViewOrigin = CGPoint(x: 0, y: (view.frame.height - imageViewSize.height)/2)
-            }
-            imageView.frame.origin = imageViewOrigin
-            imageView.frame.size   = imageViewSize
+            imageView.image        = image
+            imageView.frame.size   = supposedContentSize(with: image)
+            // 实践发现必须设置为zero才不会出现奇怪的问题.
+            // 本以为当imageView的高度小于view.frame.height时, 须调整y值使imageView居中,
+            // 但会有很大概率导致peek操作触发后, 图片显示不完全的现象.
+            imageView.frame.origin = .zero
         }
     }
     
     override open func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(imageView)
+        if let image = imageWrapper.image {
+            self.image = image
+            return
+        }
         image = imageWrapper.placeholderImage
         
         guard let url = URL(string: imageWrapper.highQualityImageUrl) else { return }
