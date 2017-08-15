@@ -41,6 +41,18 @@ open class ZJProgressView: UIView {
     open var animated             : Bool         = false
     open var animationDuration    : TimeInterval = 0.25
     open var isRemovedOnCompletion: Bool         = true
+    open var backgroundMaskColor  : UIColor = UIColor(white: 0, alpha: 0.15) {
+        didSet {
+            backgroundLayer.fillColor = backgroundMaskColor.cgColor
+        }
+    }
+    open override var tintColor: UIColor? {
+        didSet {
+            outLineLayer.strokeColor     = tintColor?.cgColor
+            progressLayer.strokeColor    = tintColor?.cgColor
+            progressBar?.backgroundColor = tintColor
+        }
+    }
     
     public required init(frame: CGRect, style: ZJProgressViewStyle = .pie, initialProgress: CGFloat = 0, outlineWidth: CGFloat = 1, animated: Bool = false, animationDuration: TimeInterval = 0.25) {
         self.style                = style
@@ -69,6 +81,7 @@ open class ZJProgressView: UIView {
         }
         
         super.init(frame: tempF)
+        tintColor       = .white
         backgroundColor = UIColor.clear
         layer.addSublayer(backgroundLayer)
         layer.addSublayer(outLineLayer)
@@ -154,7 +167,7 @@ extension ZJProgressView {
             
             let segmentLayer = CAShapeLayer()
             segmentLayer.fillColor   = UIColor.clear.cgColor
-            segmentLayer.strokeColor = UIColor.white.cgColor
+            segmentLayer.strokeColor = tintColor?.cgColor
             segmentLayer.lineWidth   = lineWidth
             segmentLayer.lineCap     = lineCap
             segmentLayer.path        = progressPath.cgPath

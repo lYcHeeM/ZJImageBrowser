@@ -13,7 +13,10 @@ import Photos
 open class ZJImageBrowserPreviewingController: UIViewController {
 
     private var imageView = UIImageView()
+    private var cachedImage: UIImage?
     open var imageWrapper: ZJImageWrapper!
+    open var needsCopyAction: Bool = true
+    open var needsSaveAction: Bool = true
     
     required public init(imageWrapper: ZJImageWrapper) {
         super.init(nibName: nil, bundle: nil)
@@ -23,7 +26,14 @@ open class ZJImageBrowserPreviewingController: UIViewController {
     open func supposedContentSize(with image: UIImage? = nil) -> CGSize {
         var usingImage = image
         if usingImage == nil {
-            usingImage = SDImageCache.shared().imageFromDiskCache(forKey: imageWrapper.highQualityImageUrl)
+            if let asset = imageWrapper.asset {
+                asset.image(shouldSynchronous: true, size: CGSize(width: 100, height: 100), completion: { (image, info) in
+                    self.cachedImage = image
+                    usingImage = image
+                })
+            } else {
+                usingImage = SDImageCache.shared().imageFromDiskCache(forKey: imageWrapper.highQualityImageUrl)
+            }
         }
         guard let image = usingImage else { return UIScreen.main.bounds.size }
         var result    = CGSize.zero
@@ -57,7 +67,16 @@ open class ZJImageBrowserPreviewingController: UIViewController {
         if let image = imageWrapper.image {
             self.image = image
             return
+        } else if let image = cachedImage {
+            self.image = image
+            return
+        } else if let asset = imageWrapper.asset {
+            asset.image(shouldSynchronous: false, size: UIScreen.main.bounds.size, completion: { (image, info) in
+                self.image = image
+            })
+            return
         }
+        
         image = imageWrapper.placeholderImage
         
         guard let url = URL(string: imageWrapper.highQualityImageUrl) else { return }
@@ -84,10 +103,10 @@ open class ZJImageBrowserPreviewingController: UIViewController {
     
     @available(iOS 9.0, *)
     override open var previewActionItems: [UIPreviewActionItem] {
-        let action1 = UIPreviewAction(title: "Copy to pastboard", style: .default) { (action, controller) in
+        let copyAction = UIPreviewAction(title: "Copy to pastboard", style: .default) { (action, controller) in
             UIPasteboard.general.image = self.image
         }
-        let action2 = UIPreviewAction(title: "Save to album", style: .default) { (action, controller) in
+        let saveAction = UIPreviewAction(title: "Save to album", style: .default) { (action, controller) in
             let status = PHPhotoLibrary.authorizationStatus()
             if status == .restricted || status == .denied {
                 ZJImageBrowserHUD.show(message: ZJImageBrowser.albumAuthorizingFailedHint, inView: self.view, needsIndicator: false, hideAfter: 2.5)
@@ -96,7 +115,14 @@ open class ZJImageBrowserPreviewingController: UIViewController {
             guard let image = self.image else { return }
             UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
         }
-        return [action1, action2]
+        var actions = [UIPreviewAction]()
+        if needsCopyAction {
+            actions.append(copyAction)
+        }
+        if needsSaveAction {
+            actions.append(saveAction)
+        }
+        return actions
     }
     
     @objc private func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: Any?) {

@@ -10,14 +10,14 @@ import Photos
 
 /// An simple full screen photo browser based on UICollectionView.
 open class ZJImageBrowser: UICollectionView {
-    open static let buttonHorizontalPadding: CGFloat = 20
-    open static let buttonVerticalPadding  : CGFloat = 35
-    open static let buttonHeight           : CGFloat = 27
-    open static let pageSpacing            : CGFloat = 10
+    open static var buttonHorizontalPadding: CGFloat = 20
+    open static var buttonVerticalPadding  : CGFloat = 35
+    open static var buttonHeight           : CGFloat = 27
+    open static var pageSpacing            : CGFloat = 10
     
-    open static let albumAuthorizingFailedHint = "Saving failed! Can't access your ablum, check in \"Settings\"->\"Privacy\"->\"Photos\"."
-    open static let imageSavingSucceedHint     = "Saving succeed"
-    open static let imageSavingFailedHint      = "Saving failed!"
+    open static var albumAuthorizingFailedHint = "Saving failed! Can't access your ablum, check in \"Settings\"->\"Privacy\"->\"Photos\"."
+    open static var imageSavingSucceedHint     = "Saving succeed"
+    open static var imageSavingFailedHint      = "Saving failed!"
     
     fileprivate var isShowing         = false
     fileprivate var saveButton        = UIButton(type: .system)
@@ -87,8 +87,10 @@ open class ZJImageBrowser: UICollectionView {
         layout.minimumLineSpacing      = 0
         
         super.init(frame: CGRect(x: containerRect.minX, y: containerRect.minY, width: containerRect.width + pageSpacing, height: containerRect.height), collectionViewLayout: layout)
-        self.imageWrappers     = imageWrappers
-        self.innerInitialIndex = initialIndex
+        self.imageWrappers = imageWrappers
+        if initialIndex >= 0 && initialIndex < imageWrappers.count {
+            self.innerInitialIndex = initialIndex
+        }
         
         isPagingEnabled = true
         dataSource      = self

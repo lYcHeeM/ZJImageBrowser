@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import Photos
 
 open class ZJImageWrapper: NSObject {
     open var image              : UIImage?
     open var highQualityImageUrl: String = ""
+    open var asset              : PHAsset?
     open var shouldDownloadImage: Bool = true
     open var progressStyle      : ZJProgressViewStyle = .pie
     open var placeholderImage   : UIImage?
@@ -21,9 +23,10 @@ open class ZJImageWrapper: NSObject {
         super.init()
     }
     
-    public required init(image: UIImage? = nil, highQualityImageUrl: String?, shouldDownloadImage: Bool, placeholderImage: UIImage?, imageContainer: UIView?) {
+    public required init(image: UIImage? = nil, highQualityImageUrl: String?, asset: PHAsset? = nil, shouldDownloadImage: Bool, placeholderImage: UIImage?, imageContainer: UIView?) {
         self.image               = image
         self.highQualityImageUrl = highQualityImageUrl ?? ""
+        self.asset               = asset
         self.shouldDownloadImage = shouldDownloadImage
         self.placeholderImage    = placeholderImage
         self.imageContainer      = imageContainer

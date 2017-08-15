@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 import SDWebImage
 
 class ZJImageCell: UICollectionViewCell {
@@ -67,6 +68,16 @@ extension ZJImageCell {
             retryButton.frame.size.height = ZJImageBrowser.buttonHeight
         }
         adjustSubviewFrames()
+    }
+    
+    override func prepareForReuse() {
+        #if DEBUG
+            hud?.hide(animated: false)
+            hud = nil
+        #endif
+        progressView?.removeFromSuperview()
+        progressView = nil
+        super.prepareForReuse()
     }
     
     fileprivate func setupSubviews() {
@@ -159,22 +170,23 @@ extension ZJImageCell {
 
 extension ZJImageCell {
     
-    override func prepareForReuse() {
-        #if DEBUG
-            hud?.hide(animated: false)
-            hud = nil
-        #endif
-        progressView?.removeFromSuperview()
-        progressView = nil
-        super.prepareForReuse()
-    }
-    
     func setImage(with imageWrapper: ZJImageWrapper) {
         self.imageWrapper = imageWrapper
         if let image = imageWrapper.image {
             self.image = image
             return
+        } else if let asset = imageWrapper.asset {
+            let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+            contentView.addSubview(indicator)
+            indicator.center = CGPoint(x: (contentView.bounds.width - ZJImageBrowser.pageSpacing)/2, y: contentView.bounds.height/2)
+            indicator.startAnimating()
+            asset.originalImage(shouldSynchronous: false, completion: { (image, info) in
+                indicator.removeFromSuperview()
+                self.image = image
+            })
+            return
         }
+        
         guard let usingUrl = URL(string: imageWrapper.highQualityImageUrl) else { return }
         
         var placeholderImage = imageWrapper.placeholderImage

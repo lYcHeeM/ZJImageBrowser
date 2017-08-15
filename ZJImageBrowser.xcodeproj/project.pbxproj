@@ -21,6 +21,7 @@
 		B266D7821F161BCA003840E7 /* ZJImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7751F161BCA003840E7 /* ZJImageCell.swift */; };
 		B266D7831F161BCA003840E7 /* ZJImageWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7761F161BCA003840E7 /* ZJImageWrapper.swift */; };
 		B266D7841F161BCA003840E7 /* ZJProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7771F161BCA003840E7 /* ZJProgressView.swift */; };
+		B2744ABD1F429EF90009ECA2 /* PHAssetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2744ABC1F429EF90009ECA2 /* PHAssetExtensions.swift */; };
 		B2AA3FD31F18A87F0064056E /* SimpleUsageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AA3FD21F18A87F0064056E /* SimpleUsageController.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,7 @@
 		B266D7751F161BCA003840E7 /* ZJImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageCell.swift; sourceTree = "<group>"; };
 		B266D7761F161BCA003840E7 /* ZJImageWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJImageWrapper.swift; sourceTree = "<group>"; };
 		B266D7771F161BCA003840E7 /* ZJProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZJProgressView.swift; sourceTree = "<group>"; };
+		B2744ABC1F429EF90009ECA2 /* PHAssetExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PHAssetExtensions.swift; sourceTree = "<group>"; };
 		B2AA3FD21F18A87F0064056E /* SimpleUsageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleUsageController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,6 +127,7 @@
 				B266D7751F161BCA003840E7 /* ZJImageCell.swift */,
 				B266D7761F161BCA003840E7 /* ZJImageWrapper.swift */,
 				B266D7771F161BCA003840E7 /* ZJProgressView.swift */,
+				B2744ABC1F429EF90009ECA2 /* PHAssetExtensions.swift */,
 			);
 			path = ZJImageBrowser;
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2744ABD1F429EF90009ECA2 /* PHAssetExtensions.swift in Sources */,
 				B266D7801F161BCA003840E7 /* ZJImageBrowserHUD.swift in Sources */,
 				B2AA3FD31F18A87F0064056E /* SimpleUsageController.swift in Sources */,
 				B266D77E1F161BCA003840E7 /* ViewController.swift in Sources */,
