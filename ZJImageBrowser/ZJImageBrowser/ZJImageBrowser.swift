@@ -30,6 +30,10 @@ open class ZJImageBrowser: UICollectionView {
     open static var albumAuthorizingFailedHint = "Saving failed! Can't access your ablum, check in \"Settings\"->\"Privacy\"->\"Photos\"."
     open static var imageSavingSucceedHint     = "Saving succeed"
     open static var imageSavingFailedHint      = "Saving failed!"
+    open static var retryButtonTitle           = "Downloading failed, Tap to retry"
+    open static var saveActionTitle            = "Save to Album"
+    open static var copyToPastboardActionTitle = "Copy to pastboard"
+    open static var showsDebugHud              = false
     
     fileprivate var isShowing         = false
     fileprivate var saveButton        = UIButton(type: .system)
@@ -257,7 +261,7 @@ extension ZJImageBrowser {
                     mirroredImageView = UIImageView()
                     _superview.addSubview(mirroredImageView)
                     mirroredImageView.frame         = photoCell.imageContainer.frame
-                    mirroredImageView.image         = imageWrappers[innerCurrentIndex].placeholderImage
+                    mirroredImageView.image         = photoCell.image != nil ? photoCell.image : imageWrappers[innerCurrentIndex].placeholderImage
                     mirroredImageView.contentMode   = .scaleAspectFill
                     mirroredImageView.clipsToBounds = true
                     

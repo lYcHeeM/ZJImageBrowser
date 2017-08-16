@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		409943853B603D0A630BE692 /* Pods_ZJImageBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1BB3940EC00EFAF3F8BFF0 /* Pods_ZJImageBrowser.framework */; };
+		528F312ABE37947E8A16715F /* Pods_ZJImageBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 836C625AF31F490341CA69D4 /* Pods_ZJImageBrowser.framework */; };
 		B204A47D1F170B3100F87A20 /* ZJImageBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B204A47C1F170B3100F87A20 /* ZJImageBrowser.bundle */; };
 		B266D7781F161BCA003840E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B266D7681F161BCA003840E7 /* AppDelegate.swift */; };
 		B266D7791F161BCA003840E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B266D7691F161BCA003840E7 /* Assets.xcassets */; };
@@ -26,12 +26,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0149E6D2516EB3284CF2A2F8 /* Pods-ZJPhotoBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZJPhotoBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZJPhotoBrowser/Pods-ZJPhotoBrowser.release.xcconfig"; sourceTree = "<group>"; };
-		1AB1B98737860F6B92588F26 /* Pods_ZJPhotoBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZJPhotoBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		490F92ACAB21631C056491D3 /* Pods-ZJPhotoBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZJPhotoBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZJPhotoBrowser/Pods-ZJPhotoBrowser.debug.xcconfig"; sourceTree = "<group>"; };
-		8813A391FCD8FA9AFA66606C /* Pods-ZJImageBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZJImageBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZJImageBrowser/Pods-ZJImageBrowser.debug.xcconfig"; sourceTree = "<group>"; };
-		948AC85138F4DA40B11B13F6 /* Pods-ZJImageBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZJImageBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZJImageBrowser/Pods-ZJImageBrowser.release.xcconfig"; sourceTree = "<group>"; };
-		AE1BB3940EC00EFAF3F8BFF0 /* Pods_ZJImageBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZJImageBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0FA56A9CEF7BFA47E938E644 /* Pods-ZJImageBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZJImageBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZJImageBrowser/Pods-ZJImageBrowser.debug.xcconfig"; sourceTree = "<group>"; };
+		38093A2BDA222A154E3209AE /* Pods-ZJImageBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZJImageBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZJImageBrowser/Pods-ZJImageBrowser.release.xcconfig"; sourceTree = "<group>"; };
+		836C625AF31F490341CA69D4 /* Pods_ZJImageBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZJImageBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B204A47C1F170B3100F87A20 /* ZJImageBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZJImageBrowser.bundle; sourceTree = "<group>"; };
 		B22720FF1F0FC58500BC689B /* ZJImageBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZJImageBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B266D7681F161BCA003840E7 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -56,29 +53,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				409943853B603D0A630BE692 /* Pods_ZJImageBrowser.framework in Frameworks */,
+				528F312ABE37947E8A16715F /* Pods_ZJImageBrowser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		109DDF3EB908D89F16C4C78E /* Frameworks */ = {
+		126CB850FC150E58217729CB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1AB1B98737860F6B92588F26 /* Pods_ZJPhotoBrowser.framework */,
-				AE1BB3940EC00EFAF3F8BFF0 /* Pods_ZJImageBrowser.framework */,
+				836C625AF31F490341CA69D4 /* Pods_ZJImageBrowser.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3D36C713AA6B742907D4C87B /* Pods */ = {
+		213619AE2ACD527AFFCAADD8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				490F92ACAB21631C056491D3 /* Pods-ZJPhotoBrowser.debug.xcconfig */,
-				0149E6D2516EB3284CF2A2F8 /* Pods-ZJPhotoBrowser.release.xcconfig */,
-				8813A391FCD8FA9AFA66606C /* Pods-ZJImageBrowser.debug.xcconfig */,
-				948AC85138F4DA40B11B13F6 /* Pods-ZJImageBrowser.release.xcconfig */,
+				0FA56A9CEF7BFA47E938E644 /* Pods-ZJImageBrowser.debug.xcconfig */,
+				38093A2BDA222A154E3209AE /* Pods-ZJImageBrowser.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -88,8 +82,8 @@
 			children = (
 				B266D7671F161BCA003840E7 /* ZJImageBrowser */,
 				B22721001F0FC58500BC689B /* Products */,
-				3D36C713AA6B742907D4C87B /* Pods */,
-				109DDF3EB908D89F16C4C78E /* Frameworks */,
+				213619AE2ACD527AFFCAADD8 /* Pods */,
+				126CB850FC150E58217729CB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -139,12 +133,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B22721111F0FC58500BC689B /* Build configuration list for PBXNativeTarget "ZJImageBrowser" */;
 			buildPhases = (
-				7718AAB71A28A9AB782AF611 /* [CP] Check Pods Manifest.lock */,
+				608E7D4245DF8F3E44BA5D8C /* [CP] Check Pods Manifest.lock */,
 				B22720FB1F0FC58500BC689B /* Sources */,
 				B22720FC1F0FC58500BC689B /* Frameworks */,
 				B22720FD1F0FC58500BC689B /* Resources */,
-				E269A9F2CA2B1099192518FC /* [CP] Embed Pods Frameworks */,
-				96EF81EE78BBB4DD4F1C93A6 /* [CP] Copy Pods Resources */,
+				F162FF47F6FD3B5D94365293 /* [CP] Embed Pods Frameworks */,
+				7448A1473698C9B26EF95BB5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -205,7 +199,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7718AAB71A28A9AB782AF611 /* [CP] Check Pods Manifest.lock */ = {
+		608E7D4245DF8F3E44BA5D8C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -217,10 +211,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		96EF81EE78BBB4DD4F1C93A6 /* [CP] Copy Pods Resources */ = {
+		7448A1473698C9B26EF95BB5 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -235,7 +229,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZJImageBrowser/Pods-ZJImageBrowser-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E269A9F2CA2B1099192518FC /* [CP] Embed Pods Frameworks */ = {
+		F162FF47F6FD3B5D94365293 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -388,7 +382,7 @@
 		};
 		B22721121F0FC58500BC689B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8813A391FCD8FA9AFA66606C /* Pods-ZJImageBrowser.debug.xcconfig */;
+			baseConfigurationReference = 0FA56A9CEF7BFA47E938E644 /* Pods-ZJImageBrowser.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7G9Q3YE88T;
@@ -404,7 +398,7 @@
 		};
 		B22721131F0FC58500BC689B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 948AC85138F4DA40B11B13F6 /* Pods-ZJImageBrowser.release.xcconfig */;
+			baseConfigurationReference = 38093A2BDA222A154E3209AE /* Pods-ZJImageBrowser.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7G9Q3YE88T;

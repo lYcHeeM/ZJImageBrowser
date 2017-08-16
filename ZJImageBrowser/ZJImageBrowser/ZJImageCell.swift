@@ -102,7 +102,7 @@ extension ZJImageCell {
         guard retryButton == nil else { return }
         retryButton = UIButton(type: .system)
         retryButton.isHidden = true
-        retryButton.setTitle(" Downloading failed, Tap to retry  ", for: .normal)
+        retryButton.setTitle(" \(ZJImageBrowser.retryButtonTitle) ", for: .normal)
         retryButton.titleLabel?.font   = UIFont.systemFont(ofSize: 12)
         retryButton.tintColor          = UIColor.white
         retryButton.layer.cornerRadius = 3
@@ -190,7 +190,7 @@ extension ZJImageCell {
         
         var placeholderImage = imageWrapper.placeholderImage
         if placeholderImage == nil {
-            placeholderImage = bundleImage(named: "placeholder")
+            placeholderImage = bundleImage(named: "whiteplaceholder")
         }
         retryButton?.isHidden = true
         progressView?.removeFromSuperview()
@@ -201,7 +201,9 @@ extension ZJImageCell {
             SDImageCache.shared().queryDiskCache(forKey: imageWrapper.highQualityImageUrl, done: { (image, cacheType) in
                 guard let cachedImage = image else {
                     #if DEBUG
-                        self.hud = ZJImageBrowserHUD.show(message: "Won't download the large image, cause 'shouldDownloadImage' is false.", inView: self.scrollView, animated: true, needsIndicator: false, hideAfter: 3)
+                        if ZJImageBrowser.showsDebugHud {
+                            self.hud = ZJImageBrowserHUD.show(message: "Won't download the large image, cause 'shouldDownloadImage' is false.", inView: self.scrollView, animated: true, needsIndicator: false, hideAfter: 3)
+                        }
                     #endif
                     return
                 }

@@ -103,10 +103,10 @@ open class ZJImageBrowserPreviewingController: UIViewController {
     
     @available(iOS 9.0, *)
     override open var previewActionItems: [UIPreviewActionItem] {
-        let copyAction = UIPreviewAction(title: "Copy to pastboard", style: .default) { (action, controller) in
+        let copyAction = UIPreviewAction(title: ZJImageBrowser.copyToPastboardActionTitle, style: .default) { (action, controller) in
             UIPasteboard.general.image = self.image
         }
-        let saveAction = UIPreviewAction(title: "Save to album", style: .default) { (action, controller) in
+        let saveAction = UIPreviewAction(title: ZJImageBrowser.saveActionTitle, style: .default) { (action, controller) in
             let status = PHPhotoLibrary.authorizationStatus()
             if status == .restricted || status == .denied {
                 ZJImageBrowserHUD.show(message: ZJImageBrowser.albumAuthorizingFailedHint, inView: self.view, needsIndicator: false, hideAfter: 2.5)
