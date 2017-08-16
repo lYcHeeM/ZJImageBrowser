@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "ZJImageBrowser"
-  s.version      = "0.0.6"
+  s.version      = "0.0.7"
   s.summary      = "An simple iOS photo browser based on UICollectionView written in Swift."
 
   s.homepage     = "https://github.com/lYcHeeM/ZJImageBrowser"
@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
 
   s.xcconfig = {
     "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2",
-    'OTHER_SWIFT_FLAGS[config=Debug]' => '-DDEBUG'
+    'OTHER_SWIFT_FLAGS[config=Debug]' => '-D DEBUG'
   }
   s.dependency "SDWebImage", "~> 3.7.5"
 
