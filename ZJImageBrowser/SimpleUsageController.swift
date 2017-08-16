@@ -46,8 +46,8 @@ class SimpleUsageController: UIViewController {
                 imageWrappers.append(wrapper)
                 index += 1
             }
-            browser.imageWrappers = imageWrappers
         }
+        browser.imageWrappers = imageWrappers
         browser.show(inView: navigationController?.view, animated: true, enlargingAnimated: enlargingShrinkingAnimation, at: imageView.tag)
     }
 }
@@ -69,6 +69,10 @@ extension SimpleUsageController {
     
     @IBAction func needsSaveButtonSwitchValueChanged(_ sender: UISwitch) {
         browser.needsSaveButton = sender.isOn
+    }
+    
+    @IBAction func needsDeleteButtonSwitchValueChanged(_ sender: UISwitch) {
+        browser.needsDeleteButton = sender.isOn
     }
     
     @IBAction func usesInternalHUDSwitchValueChanged(_ sender: UISwitch) {

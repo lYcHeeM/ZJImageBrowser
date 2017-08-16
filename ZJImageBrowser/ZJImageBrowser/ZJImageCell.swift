@@ -13,7 +13,6 @@ import SDWebImage
 class ZJImageCell: UICollectionViewCell {
     
     static let reuseIdentifier = "ZJImageCell"
-    let maximumZoomScale: CGFloat = 2.5
     
     fileprivate var scrollView  : UIScrollView = UIScrollView()
     fileprivate var imageView   : UIImageView  = UIImageView()
@@ -139,8 +138,8 @@ extension ZJImageCell {
             }
                 // 如果小于设定的放大系数, 即设定的放大系数已足够令屏幕不留黑边时, 直接用设定的放大系数即可.
                 // Finally, if the computed max zoom scale were less than the preset value "maximumZoomScale", then discard it.
-            if maxZoomScale < maximumZoomScale {
-                maxZoomScale = maximumZoomScale
+            if maxZoomScale < ZJImageBrowser.maximumZoomScale {
+                maxZoomScale = ZJImageBrowser.maximumZoomScale
             }
             scrollView.minimumZoomScale = 1
             scrollView.maximumZoomScale = maxZoomScale
@@ -191,10 +190,7 @@ extension ZJImageCell {
         
         var placeholderImage = imageWrapper.placeholderImage
         if placeholderImage == nil {
-            let bundle = Bundle(for: ZJImageCell.self)
-            if let path = bundle.path(forResource: "ZJImageBrowser.bundle/placeholder@2x", ofType: "png") {
-                placeholderImage = UIImage(contentsOfFile: path)
-            }
+            placeholderImage = bundleImage(named: "placeholder")
         }
         retryButton?.isHidden = true
         progressView?.removeFromSuperview()

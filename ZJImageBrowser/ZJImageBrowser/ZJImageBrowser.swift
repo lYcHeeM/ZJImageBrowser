@@ -8,6 +8,16 @@
 import UIKit
 import Photos
 
+internal func bundleImage(named: String) -> UIImage? {
+    var path = "ZJImageBrowser.bundle" + "/\(named)"
+    if let image = UIImage(named: path) {
+        return image
+    } else {
+        path = "Frameworks/ZJImageBrowser.framework/" + path
+        return UIImage(named: path)
+    }
+}
+
 /// An simple full screen photo browser based on UICollectionView.
 open class ZJImageBrowser: UICollectionView {
     open static var buttonHorizontalPadding: CGFloat = 20
@@ -15,14 +25,25 @@ open class ZJImageBrowser: UICollectionView {
     open static var buttonHeight           : CGFloat = 27
     open static var pageSpacing            : CGFloat = 10
     
+    open static var maximumZoomScale: CGFloat = 3
+    
     open static var albumAuthorizingFailedHint = "Saving failed! Can't access your ablum, check in \"Settings\"->\"Privacy\"->\"Photos\"."
     open static var imageSavingSucceedHint     = "Saving succeed"
     open static var imageSavingFailedHint      = "Saving failed!"
     
     fileprivate var isShowing         = false
     fileprivate var saveButton        = UIButton(type: .system)
+    fileprivate var deleteButton      = UIButton(type: .system)
     fileprivate var pageIndexLabel    = UILabel()
-    fileprivate var innerInitialIndex = 0
+    fileprivate var innerCurrentIndex = 0 {
+        didSet {
+            if imageWrappers.count > 0 {
+                pageIndexLabel.text = "\(innerCurrentIndex + 1)/\(imageWrappers.count)"
+            } else {
+                pageIndexLabel.text = nil
+            }
+        }
+    }
     fileprivate weak var hud: ZJImageBrowserHUD?
     
     open var imageWrappers = [ZJImageWrapper]() {
@@ -30,8 +51,8 @@ open class ZJImageBrowser: UICollectionView {
             reloadData()
         }
     }
-    open var initialIndex: Int {
-        return innerInitialIndex
+    open var currentIndex: Int {
+        return innerCurrentIndex
     }
     open var containerRect: CGRect = UIScreen.main.bounds {
         didSet {
@@ -60,11 +81,18 @@ open class ZJImageBrowser: UICollectionView {
             saveButton.isHidden = !needsSaveButton
         }
     }
+    open var needsDeleteButton: Bool = false {
+        didSet {
+            deleteButton.isHidden = !needsDeleteButton
+        }
+    }
+    
     /// Default is true. trun off it if you want use loacl HUD.
     /// 默认打开, 如果想用项目本地的hud提示异常, 请置为false
     open var usesInternalHUD   = true
     open var shrinkingAnimated = true
     open var imageViewSingleTapped : ((ZJImageBrowser, Int, UIImage?)         -> Swift.Void)?
+    open var deleteActionAt        : ((ZJImageBrowser, Int, UIImage?)         -> Swift.Void)?
     open var albumAuthorizingFailed: ((ZJImageBrowser, PHAuthorizationStatus) -> Swift.Void)?
     open var photoSavingFailed     : ((ZJImageBrowser, UIImage)               -> Swift.Void)?
     /// 注意: 此闭包将不在主线程执行
@@ -89,17 +117,17 @@ open class ZJImageBrowser: UICollectionView {
         super.init(frame: CGRect(x: containerRect.minX, y: containerRect.minY, width: containerRect.width + pageSpacing, height: containerRect.height), collectionViewLayout: layout)
         self.imageWrappers = imageWrappers
         if initialIndex >= 0 && initialIndex < imageWrappers.count {
-            self.innerInitialIndex = initialIndex
+            self.innerCurrentIndex = initialIndex
         }
         
         isPagingEnabled = true
         dataSource      = self
         delegate        = self
         showsHorizontalScrollIndicator = false
-        showsHorizontalScrollIndicator = false
         register(ZJImageCell.self, forCellWithReuseIdentifier: ZJImageCell.reuseIdentifier)
         
         setupSaveButton()
+        setupDeleteButton()
         setupPageIndexLabel()
     }
     
@@ -113,22 +141,25 @@ extension ZJImageBrowser {
     override open func layoutSubviews() {
         super.layoutSubviews()
         saveButton.frame.origin = CGPoint(x: frame.width - ZJImageBrowser.buttonHorizontalPadding - 10 - saveButton.bounds.width, y: frame.height - ZJImageBrowser.buttonHeight - ZJImageBrowser.buttonVerticalPadding)
-        saveButton.frame.size.height = ZJImageBrowser.buttonHeight
+        
+        var deleteButtonX = saveButton.frame.minX - 10 - deleteButton.bounds.width
+        if needsSaveButton == false {
+            deleteButtonX = saveButton.frame.origin.x
+        }
+        deleteButton.center.y = saveButton.center.y
+        deleteButton.frame.origin.x = deleteButtonX
     }
     
     fileprivate func setupSaveButton() {
-        // 由于self继承ScrollView, 如果直接把button加到self上, 则会跟随滚动
-        // 此处可耍小技巧, 把button加到一个空的backgroundView上,
-        // 则可避免修改整个browser的视图结构, 可直接以CollectionView为最底层
-        saveButton.setTitle("  Save  ", for: .normal)
-        saveButton.titleLabel?.font   = UIFont.systemFont(ofSize: 14)
-        saveButton.tintColor          = UIColor.white
-        saveButton.layer.cornerRadius = 3
-        saveButton.layer.borderWidth  = 1.5/UIScreen.main.scale
-        saveButton.layer.borderColor  = UIColor.white.cgColor
-        saveButton.backgroundColor    = UIColor(white: 0.0, alpha: 0.5)
+        saveButton.setImage(bundleImage(named: "icon_save")?.withRenderingMode(.alwaysOriginal), for: .normal)
         saveButton.sizeToFit()
         saveButton.addTarget(self, action: #selector(saveButtonClicked), for: .touchUpInside)
+    }
+    
+    fileprivate func setupDeleteButton() {
+        deleteButton.setImage(bundleImage(named: "icon_delete")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        deleteButton.sizeToFit()
+        deleteButton.addTarget(self, action: #selector(deleteButtonClicked), for: .touchUpInside)
     }
     
     fileprivate func setupPageIndexLabel() {
@@ -137,7 +168,7 @@ extension ZJImageBrowser {
         pageIndexLabel.textAlignment = .center
         pageIndexLabel.frame.size    = CGSize(width: 60, height: 27)
         pageIndexLabel.center        = CGPoint(x: UIScreen.main.bounds.width/2, y: 30)
-        pageIndexLabel.text          = "\(innerInitialIndex + 1)/\(imageWrappers.count)"
+        pageIndexLabel.text          = "\(innerCurrentIndex + 1)/\(imageWrappers.count)"
     }
 }
 
@@ -149,11 +180,13 @@ extension ZJImageBrowser {
         guard isShowing == false else { return }
         _superview.addSubview(self)
         _superview.addSubview(saveButton)
+        _superview.addSubview(deleteButton)
         _superview.addSubview(pageIndexLabel)
         saveButton.isHidden = !needsSaveButton
-        if let index = index { innerInitialIndex = index }
-        scrollToItem(at: IndexPath(item: innerInitialIndex, section: 0), at: .centeredHorizontally, animated: false)
-        let currentImageWrapper = imageWrappers[innerInitialIndex]
+        deleteButton.isHidden = !needsDeleteButton
+        if let index = index, index >= 0, index < imageWrappers.count { innerCurrentIndex = index }
+        scrollToItem(at: IndexPath(item: innerCurrentIndex, section: 0), at: .centeredHorizontally, animated: false)
+        let currentImageWrapper = imageWrappers[innerCurrentIndex]
         guard enlargingAnimated, let enlargingView = currentImageWrapper.imageContainer, let enlargingImage = currentImageWrapper.placeholderImage else {
             animate(animated: animated)
             return
@@ -184,10 +217,12 @@ extension ZJImageBrowser {
             if enlargingView != nil { isHidden = true }
             alpha                = 0
             saveButton.alpha     = 0
+            deleteButton.alpha   = 0
             pageIndexLabel.alpha = 0
             UIView.animate(withDuration: 0.25, animations: {
                 self.alpha                = 1
                 self.saveButton.alpha     = 1
+                self.deleteButton.alpha   = 1
                 self.pageIndexLabel.alpha = 1
                 if let mirroredImageView = mirroredImageView {
                     mirroredImageView.frame = animationEndFrame
@@ -212,7 +247,7 @@ extension ZJImageBrowser {
             var shrinkingView              : UIView?
             var mirroredImageView          : UIImageView!
             var shrinkingAnimationEndFrame = CGRect.zero
-            if shrinkingAnimated, let _shrinkingView = imageWrappers[innerInitialIndex].imageContainer, let _superview = superview, let photoCell = visibleCells.first as? ZJImageCell {
+            if shrinkingAnimated, let _shrinkingView = imageWrappers[innerCurrentIndex].imageContainer, let _superview = superview, let photoCell = visibleCells.first as? ZJImageCell {
                 let rect = _shrinkingView.convert(_shrinkingView.bounds, to: _superview)
                 if _superview.bounds.intersects(rect) {
                     shrinkingAnimationEndFrame = rect
@@ -222,7 +257,7 @@ extension ZJImageBrowser {
                     mirroredImageView = UIImageView()
                     _superview.addSubview(mirroredImageView)
                     mirroredImageView.frame         = photoCell.imageContainer.frame
-                    mirroredImageView.image         = imageWrappers[innerInitialIndex].placeholderImage
+                    mirroredImageView.image         = imageWrappers[innerCurrentIndex].placeholderImage
                     mirroredImageView.contentMode   = .scaleAspectFill
                     mirroredImageView.clipsToBounds = true
                     
@@ -234,14 +269,17 @@ extension ZJImageBrowser {
             UIView.animate(withDuration: 0.25, animations: {
                 self.alpha                = 0
                 self.saveButton.alpha     = 0
+                self.deleteButton.alpha   = 0
                 self.pageIndexLabel.alpha = 0
                 mirroredImageView?.frame  = shrinkingAnimationEndFrame
             }, completion: { (_) in
                 self.pageIndexLabel.removeFromSuperview()
                 self.saveButton.removeFromSuperview()
+                self.deleteButton.removeFromSuperview()
                 self.removeFromSuperview()
                 self.alpha                = 1
                 self.saveButton.alpha     = 1
+                self.deleteButton.alpha   = 1
                 self.pageIndexLabel.alpha = 1
                 self.isShowing            = false
                 shrinkingView?.isHidden   = false
@@ -285,6 +323,32 @@ extension ZJImageBrowser {
         hud?.hide(animated: false)
         ZJImageBrowserHUD.show(message: alertMessage, inView: self, needsIndicator: false)
     }
+    
+    @objc fileprivate func deleteButtonClicked() {
+        var image: UIImage?
+        if visibleCells.count == 1, let photoCell = visibleCells.first as? ZJImageCell {
+            image = photoCell.image
+        }
+        if imageWrappers.count <= 1 {
+            dismiss()
+            imageWrappers.remove(at: innerCurrentIndex)
+            deleteActionAt?(self, innerCurrentIndex, image)
+            innerCurrentIndex = 0
+            return
+        }
+        
+        performBatchUpdates({
+            self.imageWrappers.remove(at: self.innerCurrentIndex)
+            self.deleteItems(at: [IndexPath(item: self.innerCurrentIndex, section: 0)])
+        }, completion: { _ in
+            self.deleteActionAt?(self, self.innerCurrentIndex, image)
+            if let currentIndexPath = self.indexPathsForVisibleItems.first {
+                self.innerCurrentIndex = currentIndexPath.item
+            } else {
+                self.innerCurrentIndex -= 1
+            }
+        })
+    }
 }
 
 //MARK: - UICollectionViewDataSource & UICollectionViewDelegate
@@ -317,8 +381,7 @@ extension ZJImageBrowser: UICollectionViewDelegate, UICollectionViewDataSource {
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else { return }
         let currentPage      = Int(scrollView.contentOffset.x / flowLayout.itemSize.width)
-        innerInitialIndex    = currentPage
-        pageIndexLabel.text  = "\(currentPage + 1)/\(imageWrappers.count)"
+        innerCurrentIndex    = currentPage
     }
 }
 
