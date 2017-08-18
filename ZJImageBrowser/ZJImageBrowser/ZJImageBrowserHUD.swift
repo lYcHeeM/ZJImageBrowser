@@ -12,6 +12,7 @@ open class ZJImageBrowserHUD: UIToolbar {
 
     fileprivate var label = UILabel()
     fileprivate var indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    fileprivate var cover = UIView()
     
     required public init(message: String?) {
         super.init(frame: .zero)
@@ -25,6 +26,8 @@ open class ZJImageBrowserHUD: UIToolbar {
         label.numberOfLines = 0
         
         addSubview(indicator)
+        
+        cover.backgroundColor = UIColor.black
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -56,6 +59,8 @@ open class ZJImageBrowserHUD: UIToolbar {
         
         let hud = ZJImageBrowserHUD(message: message)
         hud.indicator.isHidden = !needsIndicator
+        superView.addSubview(hud.cover)
+        hud.cover.frame = superView.bounds
         superView.addSubview(hud)
         let verticalMargin  : CGFloat = 15
         let horizontalMargin: CGFloat = 30
@@ -73,8 +78,10 @@ open class ZJImageBrowserHUD: UIToolbar {
 
         if animated {
             hud.alpha = 0
+            hud.cover.alpha = 0
             UIView.animate(withDuration: 0.25, animations: { 
                 hud.alpha = 1
+                hud.cover.alpha = 0.3
             }, completion: { (_) in
                 
             })
@@ -91,9 +98,12 @@ open class ZJImageBrowserHUD: UIToolbar {
         indicator.stopAnimating()
         UIView.animate(withDuration: 0.25, animations: { 
             self.alpha = 0
+            self.cover.alpha = 0
         }) { (_) in
             self.removeFromSuperview()
+            self.cover.removeFromSuperview()
             self.alpha = 1
+            self.cover.alpha = 0.3
         }
     }
 }

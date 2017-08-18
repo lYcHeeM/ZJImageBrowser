@@ -303,15 +303,28 @@ extension ZJImageBrowser {
 //MARK: - Handle Events
 extension ZJImageBrowser {
     @objc fileprivate func saveButtonClicked() {
+        let saveAction = {
+            if self.visibleCells.count == 1, let photoCell = self.visibleCells.first as? ZJImageCell, let image = photoCell.image {
+                UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+            }
+        }
         let status = PHPhotoLibrary.authorizationStatus()
         if status == .restricted || status == .denied {
             albumAuthorizingFailed?(self, status)
             guard usesInternalHUD else { return }
             ZJImageBrowserHUD.show(message: ZJImageBrowser.albumAuthorizingFailedHint, inView: self, needsIndicator: false, hideAfter: 2.5)
-            return
-        }
-        if visibleCells.count == 1, let photoCell = visibleCells.first as? ZJImageCell, let image = photoCell.image {
-            UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        } else if status == .notDetermined {
+            PHPhotoLibrary.requestAuthorization({ (status) in
+                if status != .authorized {
+                    if self.usesInternalHUD {
+                        ZJImageBrowserHUD.show(message: ZJImageBrowser.albumAuthorizingFailedHint, inView: self, needsIndicator: false, hideAfter: 2.5)
+                    }
+                } else {
+                    saveAction()
+                }
+            })
+        } else {
+            saveAction()
         }
     }
     
