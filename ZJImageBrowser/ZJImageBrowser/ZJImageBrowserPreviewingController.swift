@@ -9,11 +9,12 @@
 import UIKit
 import SDWebImage
 import Photos
+import PhotosUI
 
 open class ZJImageBrowserPreviewingController: UIViewController {
-
+    
     private var imageView = UIImageView()
-    private var cachedImage: UIImage?
+    private var livePhotoView: UIView!
     open var imageWrapper: ZJImageWrapper!
     open var needsCopyAction: Bool = true
     open var needsSaveAction: Bool = true
@@ -28,7 +29,6 @@ open class ZJImageBrowserPreviewingController: UIViewController {
         if usingImage == nil {
             if let asset = imageWrapper.asset {
                 asset.image(shouldSynchronous: true, size: CGSize(width: 100, height: 100), completion: { (image, info) in
-                    self.cachedImage = image
                     usingImage = image
                 })
             } else {
@@ -67,11 +67,13 @@ open class ZJImageBrowserPreviewingController: UIViewController {
         if let image = imageWrapper.image {
             self.image = image
             return
-        } else if let image = cachedImage {
-            self.image = image
-            return
         } else if let asset = imageWrapper.asset {
-            asset.image(shouldSynchronous: false, size: UIScreen.main.bounds.size, completion: { (image, info) in
+            let view = progressView(with: imageWrapper.progressStyle)
+            let fullScreenSize = UIScreen.main.bounds.size.width * UIScreen.main.scale
+            asset.image(shouldSynchronous: false, size: CGSize(width: fullScreenSize, height: fullScreenSize), progress: { (fraction, error, stop, info) in
+                view.progress = CGFloat(fraction)
+            }, completion: { (image, info) in
+                view.removeFromSuperview()
                 self.image = image
             })
             return
@@ -81,12 +83,7 @@ open class ZJImageBrowserPreviewingController: UIViewController {
         
         guard let url = URL(string: imageWrapper.highQualityImageUrl) else { return }
         
-        let progressViewSize: CGFloat = 55
-        let progressViewFrame = CGRect(x: (imageView.frame.width - progressViewSize)/2, y: (imageView.frame.height - progressViewSize)/2, width: progressViewSize, height: progressViewSize)
-        let progressView = ZJProgressView(frame: progressViewFrame, style: imageWrapper.progressStyle)
-        imageView.addSubview(progressView)
-        
-        weak var weakProgressView = progressView
+        weak var weakProgressView = progressView(with: imageWrapper.progressStyle)
         SDWebImageManager.shared().downloadImage(with: url, options: [.retryFailed], progress: { (receivedSize, expectedSize) in
             let progress = CGFloat(receivedSize)/CGFloat(expectedSize)
             weakProgressView?.progress = progress
@@ -99,6 +96,14 @@ open class ZJImageBrowserPreviewingController: UIViewController {
                 weakProgressView?.removeFromSuperview()
             })
         }
+    }
+    
+    private func progressView(with style: ZJProgressViewStyle) -> ZJProgressView {
+        let progressViewSize: CGFloat = 55
+        let progressViewFrame = CGRect(x: (view.frame.width - progressViewSize)/2, y: (view.frame.height - progressViewSize)/2, width: progressViewSize, height: progressViewSize)
+        let progressView = ZJProgressView(frame: progressViewFrame, style: style)
+        view.addSubview(progressView)
+        return progressView
     }
     
     @available(iOS 9.0, *)

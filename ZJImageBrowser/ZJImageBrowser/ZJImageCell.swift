@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import PhotosUI
 import SDWebImage
 
 class ZJImageCell: UICollectionViewCell {
@@ -19,6 +20,7 @@ class ZJImageCell: UICollectionViewCell {
     fileprivate var progressView: ZJProgressView!
     fileprivate var retryButton : UIButton!
     fileprivate var imageWrapper: ZJImageWrapper?
+    fileprivate var livePhotoView: UIView!
     #if DEBUG
     fileprivate var hud: ZJImageBrowserHUD?
     #endif
@@ -127,17 +129,17 @@ extension ZJImageCell {
             
             // 根据图片大小找到合适的放大系数，放大图片时不留黑边
             // Find a appropriate zoom scale according to the imageView size in order to
-                // 先设置为高度放大系数
-                // By default, set 'maxZoomScale' as height zoom scale.
+            // 先设置为高度放大系数
+            // By default, set 'maxZoomScale' as height zoom scale.
             var maxZoomScale: CGFloat = scrollView.frame.height / imageView.frame.height
             let widthZoomScale = scrollView.frame.width/imageView.frame.width
-                // 如果小于宽度放大系数, 则设为宽度放大系数
-                // If height zoom scale were less than width zoom scale, then use width zoom scale.
+            // 如果小于宽度放大系数, 则设为宽度放大系数
+            // If height zoom scale were less than width zoom scale, then use width zoom scale.
             if maxZoomScale < widthZoomScale {
                 maxZoomScale = widthZoomScale
             }
-                // 如果小于设定的放大系数, 即设定的放大系数已足够令屏幕不留黑边时, 直接用设定的放大系数即可.
-                // Finally, if the computed max zoom scale were less than the preset value "maximumZoomScale", then discard it.
+            // 如果小于设定的放大系数, 即设定的放大系数已足够令屏幕不留黑边时, 直接用设定的放大系数即可.
+            // Finally, if the computed max zoom scale were less than the preset value "maximumZoomScale", then discard it.
             if maxZoomScale < ZJImageBrowser.maximumZoomScale {
                 maxZoomScale = ZJImageBrowser.maximumZoomScale
             }
@@ -168,20 +170,54 @@ extension ZJImageCell {
 }
 
 extension ZJImageCell {
+    private func setupProgressView(with style: ZJProgressViewStyle) {
+        progressView?.removeFromSuperview()
+        
+        let progressViewSize: CGFloat = 50
+        let progressViewFrame = CGRect(x: (frame.width - progressViewSize)/2, y: (frame.height - progressViewSize)/2, width: progressViewSize, height: progressViewSize)
+        progressView = ZJProgressView(frame: progressViewFrame, style: style)
+        contentView.addSubview(progressView)
+    }
     
     func setImage(with imageWrapper: ZJImageWrapper) {
         self.imageWrapper = imageWrapper
         if let image = imageWrapper.image {
             self.image = image
             return
-        } else if let asset = imageWrapper.asset {
-            let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
-            contentView.addSubview(indicator)
-            indicator.center = CGPoint(x: (contentView.bounds.width - ZJImageBrowser.pageSpacing)/2, y: contentView.bounds.height/2)
-            indicator.startAnimating()
-            asset.originalImage(shouldSynchronous: false, completion: { (image, info) in
-                indicator.removeFromSuperview()
+        }
+        
+        if let asset = imageWrapper.asset {
+            setupProgressView(with: imageWrapper.progressStyle)
+            urlMap = asset.hashValue
+            asset.originalImage(shouldSynchronous: false, progress: { fraction, error, stop, info in
+                guard let asset = self.imageWrapper?.asset, self.urlMap == asset.hashValue else { return }
+                self.progressView?.progress = CGFloat(fraction)
+            }, completion: { (image, info) in
+                guard let asset = self.imageWrapper?.asset, self.urlMap == asset.hashValue else { return }
+                self.progressView?.removeFromSuperview()
                 self.image = image
+                guard let error = info?[PHImageErrorKey] as? NSError else { return }
+                if let isIniCloud = info?[PHImageResultIsInCloudKey] as? Bool, isIniCloud {
+                    asset.image(shouldSynchronous: false, size: CGSize(width: UIScreen.main.bounds.size.width * UIScreen.main.scale, height: UIScreen.main.bounds.width * UIScreen.main.scale), completion: { (image, info) in
+                        guard let asset = self.imageWrapper?.asset, self.urlMap == asset.hashValue else { return }
+                        self.image = image
+                    })
+                } else {
+                    var errorMsg = error.userInfo["ErrorMessage:"] as? String
+                    if errorMsg == nil || errorMsg?.isEmpty == true {
+                        if let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError {
+                            errorMsg = underlyingError.localizedDescription
+                        } else {
+                            errorMsg = error.localizedDescription
+                        }
+                    }
+                    if errorMsg == nil || errorMsg?.isEmpty == true, let isIniCloud = info?[PHImageResultIsInCloudKey] as? Bool, isIniCloud {
+                        errorMsg = ZJImageBrowser.imageHavenotBeenDownloadedFromIcloudHint
+                    }
+                    if errorMsg?.isEmpty == false {
+                        ZJImageBrowserHUD.show(message: errorMsg, inView: self.scrollView, animated: true, needsIndicator: false, hideAfter: 3)
+                    }
+                }
             })
             return
         }
@@ -215,17 +251,11 @@ extension ZJImageCell {
             return
         }
         
-        progressView?.removeFromSuperview()
-        
-        let progressViewSize: CGFloat = 50
-        let progressViewFrame = CGRect(x: (frame.width - progressViewSize)/2, y: (frame.height - progressViewSize)/2, width: progressViewSize, height: progressViewSize)
-        progressView = ZJProgressView(frame: progressViewFrame, style: imageWrapper.progressStyle)
-        contentView.addSubview(progressView)
-        
+        setupProgressView(with: imageWrapper.progressStyle)
         // 注意到imageView.sd_setImage方法会在开头cancel掉当前imageView关联的上一次下载,
         // 当cell被重用时, 意味着imageView被重用, 则切换图片时很可能会取消正在下载图片,
         // 导致重新滑到之前的页面会重新开启下载线程, 浪费资源, 故此处不用该方法.
-        // Realizing 'imageView.sd_setImage...' function cancels previous image downloading which bounds to 'imageView', 
+        // Realizing 'imageView.sd_setImage...' function cancels previous image downloading which bounds to 'imageView',
         // thus when cell is resued, it means imageView is reused, switching page would quite likely cancel the downloading progress. What's more, when we scroll to the that page again, a new downloading of the same image would be start. It's quite a waste of resources, so I use 'downloadImage' instead of 'sd_setImage...'.
         SDWebImageManager.shared().downloadImage(with: usingUrl, options: [.retryFailed], progress: { [weak self] (receivedSize, expectedSize) in
             // 校验urlMap是防止下载图片过程中滑动到其他页面(cell)时, 下载进度回调被交叉执行。
@@ -257,7 +287,11 @@ extension ZJImageCell {
 //MARK: - UIScrollViewDelegate
 extension ZJImageCell: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imageView
+        if #available(iOS 9.1, *), let livePhotoView = livePhotoView, let asset = imageWrapper?.asset, asset.mediaSubtypes == .photoLive {
+            return livePhotoView
+        } else {
+            return imageView
+        }
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {

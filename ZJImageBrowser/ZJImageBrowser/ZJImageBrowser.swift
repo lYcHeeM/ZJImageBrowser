@@ -33,6 +33,7 @@ open class ZJImageBrowser: UICollectionView {
     open static var retryButtonTitle           = "Downloading failed, Tap to retry"
     open static var saveActionTitle            = "Save to Album"
     open static var copyToPastboardActionTitle = "Copy to pastboard"
+    open static var imageHavenotBeenDownloadedFromIcloudHint = "Photo cannot been downloaded from iCloud."
     open static var showsDebugHud              = false
     
     fileprivate var isShowing         = false
