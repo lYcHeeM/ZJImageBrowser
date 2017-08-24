@@ -316,12 +316,14 @@ extension ZJImageBrowser {
             ZJImageBrowserHUD.show(message: ZJImageBrowser.albumAuthorizingFailedHint, inView: self, needsIndicator: false, hideAfter: 2.5)
         } else if status == .notDetermined {
             PHPhotoLibrary.requestAuthorization({ (status) in
-                if status != .authorized {
-                    if self.usesInternalHUD {
-                        ZJImageBrowserHUD.show(message: ZJImageBrowser.albumAuthorizingFailedHint, inView: self, needsIndicator: false, hideAfter: 2.5)
+                DispatchQueue.main.async {
+                    if status != .authorized {
+                        if self.usesInternalHUD {
+                            ZJImageBrowserHUD.show(message: ZJImageBrowser.albumAuthorizingFailedHint, inView: self, needsIndicator: false, hideAfter: 2.5)
+                        }
+                    } else {
+                        saveAction()
                     }
-                } else {
-                    saveAction()
                 }
             })
         } else {
