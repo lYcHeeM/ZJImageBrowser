@@ -28,7 +28,7 @@ open class ZJImageBrowserPreviewingController: UIViewController {
         var usingImage = image
         if usingImage == nil {
             if let asset = imageWrapper.asset {
-                asset.image(shouldSynchronous: true, size: CGSize(width: 100, height: 100), completion: { (image, info) in
+                asset.image(shouldSynchronous: true, size: CGSize(width: 200, height: 200), resizeMode: .fast, completion: { (image, info) in
                     usingImage = image
                 })
             } else {

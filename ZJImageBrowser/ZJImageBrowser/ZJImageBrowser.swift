@@ -360,13 +360,17 @@ extension ZJImageBrowser {
         performBatchUpdates({
             self.imageWrappers.remove(at: self.innerCurrentIndex)
             self.deleteItems(at: [IndexPath(item: self.innerCurrentIndex, section: 0)])
-        }, completion: { _ in
             self.deleteActionAt?(self, self.innerCurrentIndex, image)
             if let currentIndexPath = self.indexPathsForVisibleItems.first {
                 self.innerCurrentIndex = currentIndexPath.item
+                // 发现currentIndexPath更新不及时, 快速删除多张图片时, 可能还停留在上一个item, 可能与deleteItems带动画效果有关, 此处加一个判断, 防止越界.
+                if self.innerCurrentIndex >= self.imageWrappers.count {
+                    self.innerCurrentIndex = self.imageWrappers.count - 1
+                }
             } else {
                 self.innerCurrentIndex -= 1
             }
+        }, completion: { _ in
         })
     }
 }

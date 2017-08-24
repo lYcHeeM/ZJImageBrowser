@@ -34,7 +34,7 @@ open class ZJProgressView: UIView {
             } else if usingProgress > 1 {
                 usingProgress = 1
             }
-            isHidden = usingProgress <= 0
+            isHidden = usingProgress <= 5/360
             drawShape(withProgress: usingProgress, animated: animated)
         }
     }
@@ -82,6 +82,7 @@ open class ZJProgressView: UIView {
         
         super.init(frame: tempF)
         tintColor       = .white
+        isHidden        = true
         backgroundColor = UIColor.clear
         layer.addSublayer(backgroundLayer)
         layer.addSublayer(outLineLayer)
