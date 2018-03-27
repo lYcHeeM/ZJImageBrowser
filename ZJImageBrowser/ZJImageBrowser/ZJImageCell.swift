@@ -34,6 +34,8 @@ class ZJImageCell: UICollectionViewCell {
     /// The same checking will be done in the 'completeion' call back.
     fileprivate var urlMap: Int = -1
     
+    fileprivate var imageRequestId: PHImageRequestID?
+    
     var imageContainer: UIImageView {
         return imageView
     }
@@ -187,6 +189,9 @@ extension ZJImageCell {
         }
         
         if let asset = imageWrapper.asset {
+            if let imageRequestId = imageRequestId, imageRequestId != PHInvalidImageRequestID {
+                asset.cancelRequest(by: imageRequestId)
+            }
             setupProgressView(with: imageWrapper.progressStyle)
             urlMap = asset.hashValue
             asset.originalImage(shouldSynchronous: false, progress: { fraction, error, stop, info in
@@ -198,7 +203,8 @@ extension ZJImageCell {
                 self.image = image
                 guard let error = info?[PHImageErrorKey] as? NSError else { return }
                 if let isIniCloud = info?[PHImageResultIsInCloudKey] as? Bool, isIniCloud {
-                    asset.image(shouldSynchronous: false, size: CGSize(width: UIScreen.main.bounds.size.width * UIScreen.main.scale, height: UIScreen.main.bounds.width * UIScreen.main.scale), completion: { (image, info) in
+                    let fullScreenSize = UIScreen.main.bounds.size.width * UIScreen.main.scale
+                    asset.image(shouldSynchronous: false, size: CGSize(width: fullScreenSize, height: fullScreenSize), completion: { (image, info) in
                         guard let asset = self.imageWrapper?.asset, self.urlMap == asset.hashValue else { return }
                         self.image = image
                     })

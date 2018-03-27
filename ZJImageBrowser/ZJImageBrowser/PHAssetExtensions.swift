@@ -25,4 +25,8 @@ extension PHAsset {
         
         PHCachingImageManager.default().requestImage(for: self, targetSize: size, contentMode: contentMode, options: options, resultHandler: completion)
     }
+    
+    func cancelRequest(by id: PHImageRequestID) {
+        PHImageManager.default().cancelImageRequest(id)
+    }
 }
