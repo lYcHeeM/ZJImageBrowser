@@ -43,6 +43,15 @@ class ZJImageCell: UICollectionViewCell {
     /// Note: this closure excutes in global queue.
     var imageQueryingFinished: ((Bool, UIImage?)         -> Swift.Void)?
     var singleTapped         : ((UITapGestureRecognizer) -> Swift.Void)?
+    var imageDragedDistanceChanged: ((ZJImageCell, CGFloat)           -> Swift.Void)?
+    var imageDragingEnd      : ((ZJImageCell, Bool)      -> Swift.Void)?
+    
+    fileprivate weak var singleTapGesture: UITapGestureRecognizer?
+    
+    fileprivate var imageViewOriginalFrame: CGRect = .zero
+    fileprivate var imageViewOriginalCenter: CGPoint = .zero
+    /// 拖动距离与宽度的比
+    fileprivate var dragedDistanceRatio: CGFloat = 0
     
     var image: UIImage? {
         didSet {
@@ -86,11 +95,14 @@ extension ZJImageCell {
     fileprivate func setupSubviews() {
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap))
         singleTap.delaysTouchesBegan = true
+        
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
         doubleTap.numberOfTapsRequired = 2
         singleTap.require(toFail: doubleTap)
+        singleTapGesture = singleTap
         
         contentView.addSubview(scrollView)
+        scrollView.backgroundColor = UIColor.clear
         scrollView.showsVerticalScrollIndicator   = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.delegate                       = self
@@ -100,6 +112,9 @@ extension ZJImageCell {
         scrollView.addSubview(imageView)
         imageView.isUserInteractionEnabled = true
         imageView.contentMode = .scaleAspectFill
+        let pangesture = UIPanGestureRecognizer(target: self, action: #selector(handlePangesture))
+        scrollView.addGestureRecognizer(pangesture)
+        pangesture.delegate = self
     }
     
     fileprivate func setupRetryButton() {
@@ -308,7 +323,7 @@ extension ZJImageCell: UIScrollViewDelegate {
 }
 
 //MARK: - handle events
-extension ZJImageCell {
+extension ZJImageCell: UIGestureRecognizerDelegate {
     @objc fileprivate func handleSingleTap(recognizer: UITapGestureRecognizer) {
         if scrollView.zoomScale > scrollView.minimumZoomScale {
             scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
@@ -333,10 +348,64 @@ extension ZJImageCell {
         }
     }
     
+    /// 实现图片拖拽缩放，并且，拖到一定程度可以关闭整个图片浏览器
+    @objc fileprivate func handlePangesture(recognizer: UIPanGestureRecognizer) {
+        switch recognizer.state {
+        case .began:
+            imageViewOriginalFrame  = imageView.frame
+            imageViewOriginalCenter = imageView.center
+        case .changed:
+            let point = recognizer.translation(in: scrollView)
+            let dragedDistance = sqrt(point.x * point.x + point.y * point.y)
+            
+            dragedDistanceRatio = dragedDistance / imageViewOriginalFrame.width
+            var sizeScale = 1 - dragedDistanceRatio
+            if sizeScale < 0.67 {
+                sizeScale = 0.67
+            }
+            imageView.center = CGPoint(x: imageViewOriginalCenter.x + point.x, y: imageViewOriginalCenter.y + point.y)
+            imageView.frame.size = CGSize(width: imageViewOriginalFrame.width * sizeScale, height: imageViewOriginalFrame.height * sizeScale)
+            imageDragedDistanceChanged?(self, dragedDistanceRatio)
+        case .ended:
+            var shouldResetFrame = false
+            if dragedDistanceRatio > 0.45 {
+                if imageDragingEnd == nil {
+                    shouldResetFrame = true
+                }
+            } else {
+                shouldResetFrame = true
+            }
+            if shouldResetFrame {
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.imageView.frame = self.imageViewOriginalFrame
+                })
+            }
+            imageDragingEnd?(self, !shouldResetFrame)
+        default:
+            return
+        }
+    }
+    
     @objc fileprivate func retryButtonClicked() {
         retryButton.isHidden = true
         if let imageWrapper = imageWrapper {
             setImage(with: imageWrapper)
         }
+    }
+    
+    /// 由于scrollView自带一个用于双向滚动的panGesture, 而为了在向下拖拽的图片区域时候，实现令图片跟踪触摸处并缩放图片的效果，需要再加一个panGesture, 显然这两个panGesture会发生冲突(后来居上，实践发现第二个panGesture的优先级高)，所以给第二个panGesture设置了代理，通过下面的方法来限制第二个panGesture的生效范围：3点，1.触摸位置在图片内; 2.scrollView没有被放大；3.垂直方向的距离达到一定值，经过多次测试，1.2是比较合适的值。
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        singleTapGesture?.isEnabled = false
+        defer { singleTapGesture?.isEnabled = true }
+        if let pan = gestureRecognizer as? UIPanGestureRecognizer {
+            let point = pan.translation(in: imageView)
+//            let point1 = pan.translation(in: scrollView)
+//            let point2 = pan.location(in: imageView)
+//            let point3 = pan.location(in: scrollView)
+            let pointInImageView = imageView.frame.contains(pan.location(in: scrollView))
+//            print(point, point1, point2, point3, pointInImageView)
+            return pointInImageView && scrollView.zoomScale <= 1 && point.y > 1.2
+        }
+        return false
     }
 }

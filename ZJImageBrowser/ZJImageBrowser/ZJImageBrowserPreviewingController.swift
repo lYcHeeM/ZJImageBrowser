@@ -100,9 +100,9 @@ open class ZJImageBrowserPreviewingController: UIViewController {
     
     private func progressView(with style: ZJProgressViewStyle) -> ZJProgressView {
         let progressViewSize: CGFloat = 55
-        let progressViewFrame = CGRect(x: (view.frame.width - progressViewSize)/2, y: (view.frame.height - progressViewSize)/2, width: progressViewSize, height: progressViewSize)
+        let progressViewFrame = CGRect(x: (imageView.frame.width - progressViewSize)/2, y: (imageView.frame.height - progressViewSize)/2, width: progressViewSize, height: progressViewSize)
         let progressView = ZJProgressView(frame: progressViewFrame, style: style)
-        view.addSubview(progressView)
+        imageView.addSubview(progressView)
         return progressView
     }
     

@@ -241,6 +241,7 @@ extension ZJImageBrowser {
                 self.isShowing = true
             })
         } else {
+            // 思考为何要取消隐藏入口view。因为如果不取消，图片浏览器弹出后切换到其他图片，则入口view会一直隐藏，除非重新切回入口view再单击关闭图片浏览器，这样入口view才能被取消隐藏。
             enlargingView?.isHidden = false
             isShowing = true
         }
@@ -397,6 +398,25 @@ extension ZJImageBrowser: UICollectionViewDelegate, UICollectionViewDataSource {
         cell.imageQueryingFinished = { [weak self] (succeed, image) in
             guard self != nil else { return }
             self?.imageQueryingFinished?(self!, succeed, image)
+        }
+        cell.imageDragedDistanceChanged = { [weak self] (_cell, dragedDistanceRatio) in
+            guard let `self` = self else { return }
+            let imageViewBeneathBrowser = self.imageWrappers[self.innerCurrentIndex].imageContainer
+            imageViewBeneathBrowser?.isHidden = true
+            self.layer.backgroundColor = self.backgroundColor?.withAlphaComponent(1 - dragedDistanceRatio).cgColor
+        }
+        cell.imageDragingEnd = { [weak self] (_cell, shouldDismiss) in
+            guard let `self` = self else { return }
+            if shouldDismiss {
+                self.dismiss()
+            } else {
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.layer.backgroundColor = UIColor.black.cgColor
+                }, completion: { _ in
+                    let imageViewBeneathBrowser = self.imageWrappers[self.innerCurrentIndex].imageContainer
+                    imageViewBeneathBrowser?.isHidden = false
+                })
+            }
         }
         
         return cell
